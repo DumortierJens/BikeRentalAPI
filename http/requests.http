@@ -1,5 +1,10 @@
+###### Bike Types ######
+
 ### Get Bike Types
 GET http://localhost:3000/biketypes
+
+### Get Bike Type By id
+GET http://localhost:3000/biketypes/6233a19df12c9bd0c3872690
 
 ### Add Bike Type
 POST http://localhost:3000/biketypes

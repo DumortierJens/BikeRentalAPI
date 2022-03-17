@@ -21,6 +21,11 @@ app.MapGet("/biketypes", async (IRentalService rentalService) =>
     return Results.Ok(await rentalService.GetBikeTypesAsync());
 });
 
+app.MapGet("/biketypes/{id}", async (IRentalService rentalService, string id) =>
+{
+    return Results.Ok(await rentalService.GetBikeTypeAsync(id));
+});
+
 app.MapPost("/biketypes", async (BikeTypeValidation validator, IRentalService rentalService, BikeType bikeType) =>
 {
     var validationResult = validator.Validate(bikeType);

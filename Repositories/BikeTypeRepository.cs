@@ -3,6 +3,7 @@ namespace BikeRentalAPI.Repositories;
 public interface IBikeTypeRepository
 {
     Task<BikeType> AddBikeTypeAsync(BikeType bikeType);
+    Task<BikeType> GetBikeTypeAsync(string id);
     Task<List<BikeType>> GetBikeTypesAsync();
     Task<BikeType> UpdateBikeTypeAsync(BikeType bikeType);
 }
@@ -17,6 +18,8 @@ public class BikeTypeRepository : IBikeTypeRepository
     }
 
     public async Task<List<BikeType>> GetBikeTypesAsync() => await _context.BikeTypeCollection.Find(_ => true).ToListAsync();
+
+    public async Task<BikeType> GetBikeTypeAsync(string id) => await _context.BikeTypeCollection.Find(_ => _.Id == id).FirstOrDefaultAsync();
 
     public async Task<BikeType> AddBikeTypeAsync(BikeType bikeType)
     {
