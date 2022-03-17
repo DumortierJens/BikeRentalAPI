@@ -1,11 +1,27 @@
-###
+### Get Bike Types
 GET http://localhost:3000/biketypes
 
-###
+### Add Bike Type
 POST http://localhost:3000/biketypes
 Content-Type: application/json
 
 {
+    "name": "Electric bike",
+    "prices": {
+        "halfDay": 18,
+        "day": 23,
+        "days2": 35,
+        "days3": 41,
+        "extraDay": 6
+    }
+}
+
+### Update Bike Type
+PUT http://localhost:3000/biketypes
+Content-Type: application/json
+
+{
+    "id": "6233a19df12c9bd0c3872690",
     "name": "Electric bike",
     "prices": {
         "halfDay": 18,

@@ -36,6 +36,21 @@ app.MapPost("/biketypes", async (BikeTypeValidation validator, IRentalService re
     }
 });
 
+app.MapPut("/biketypes", async (BikeTypeValidation validator, IRentalService rentalService, BikeType bikeType) =>
+{
+    var validationResult = validator.Validate(bikeType);
+    if (validationResult.IsValid && bikeType.Id != null)
+    {
+        bikeType = await rentalService.UpdateBikeTypeAsync(bikeType);
+        return Results.Ok(bikeType);
+    }
+    else
+    {
+        var errors = validationResult.Errors.Select(x => new { errors = x.ErrorMessage });
+        return Results.BadRequest(errors);
+    }
+});
+
 #endregion
 
 
