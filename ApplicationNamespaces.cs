@@ -10,4 +10,6 @@ global using FluentValidation;
 global using FluentValidation.AspNetCore;
 
 // Local
-// global using BikeRentalAPI.Models;
+global using BikeRentalAPI.Configuration;
+global using BikeRentalAPI.Context;
+global using BikeRentalAPI.Models;
