@@ -1,0 +1,17 @@
+###
+GET http://localhost:3000/biketypes
+
+###
+POST http://localhost:3000/biketypes
+Content-Type: application/json
+
+{
+    "name": "Electric bike",
+    "prices": {
+        "halfDay": 18,
+        "day": 23,
+        "days2": 35,
+        "days3": 41,
+        "extraDay": 6
+    }
+}

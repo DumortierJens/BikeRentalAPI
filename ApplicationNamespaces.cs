@@ -15,3 +15,4 @@ global using BikeRentalAPI.Context;
 global using BikeRentalAPI.Models;
 global using BikeRentalAPI.Repositories;
 global using BikeRentalAPI.Services;
+global using BikeRentalAPI.Validation;
