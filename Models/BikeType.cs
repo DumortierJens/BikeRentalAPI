@@ -5,7 +5,7 @@ public class BikeType
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string? Id { get; set; }
-    public string Name { get; set; }
-    public Dictionary<string, float> Prices { get; set; }
+    public string? Name { get; set; }
+    public PriceList? Prices { get; set; }
 }
 

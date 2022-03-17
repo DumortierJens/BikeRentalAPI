@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Q+gsUt4YekJ6Sg4FTIF1fo4lbFlntDgLVfFugZc5vBEiDLIHXOLo0MpjsMvLuc3YQLjm9J2/o0nV7ZiLkhpjHw==",
+  "dgSpecHash": "gMVlfAuXadCZA9WVp10Wrypp4qTJNBqMCRCE/H93aWz9c2NvFpOJK50NWRfO5cHCqsav49t8koAwPastVOMz+A==",
   "success": true,
-  "projectFilePath": "d:\\_SCHOOL\\2MCT_S4_AIE\\BackendDev\\Project\\BikeRentalAPI\\BikeRentalAPI.csproj",
+  "projectFilePath": "D:\\_SCHOOL\\2MCT_S4_AIE\\BackendDev\\Project\\BikeRentalAPI\\BikeRentalAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jensd\\.nuget\\packages\\dnsclient\\1.4.0\\dnsclient.1.4.0.nupkg.sha512",
     "C:\\Users\\jensd\\.nuget\\packages\\fluentvalidation\\10.3.6\\fluentvalidation.10.3.6.nupkg.sha512",

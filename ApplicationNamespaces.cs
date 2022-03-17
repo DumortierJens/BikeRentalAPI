@@ -13,3 +13,5 @@ global using FluentValidation.AspNetCore;
 global using BikeRentalAPI.Configuration;
 global using BikeRentalAPI.Context;
 global using BikeRentalAPI.Models;
+global using BikeRentalAPI.Repositories;
+global using BikeRentalAPI.Services;
