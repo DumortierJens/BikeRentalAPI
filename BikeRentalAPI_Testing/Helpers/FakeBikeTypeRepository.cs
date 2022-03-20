@@ -4,6 +4,8 @@ public class FakeBikeTypeRepository : IBikeTypeRepository
 {
     public static List<BikeType> _bikeTypes = new List<BikeType>();
 
+    public static void AddFakeBikeType(BikeType bikeType) => _bikeTypes.Add(bikeType);
+
     public Task<BikeType> AddBikeTypeAsync(BikeType bikeType)
     {
         _bikeTypes.Add(bikeType);
