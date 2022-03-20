@@ -514,11 +514,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\_SCHOOL\\2MCT_S4_AIE\\BackendDev\\Project\\BikeRentalAPI\\BikeRentalAPI.csproj",
+      "projectUniqueName": "d:\\_SCHOOL\\2MCT_S4_AIE\\BackendDev\\Project\\BikeRentalAPI\\BikeRentalAPI\\BikeRentalAPI.csproj",
       "projectName": "BikeRentalAPI",
-      "projectPath": "D:\\_SCHOOL\\2MCT_S4_AIE\\BackendDev\\Project\\BikeRentalAPI\\BikeRentalAPI.csproj",
+      "projectPath": "d:\\_SCHOOL\\2MCT_S4_AIE\\BackendDev\\Project\\BikeRentalAPI\\BikeRentalAPI\\BikeRentalAPI.csproj",
       "packagesPath": "C:\\Users\\jensd\\.nuget\\packages\\",
-      "outputPath": "D:\\_SCHOOL\\2MCT_S4_AIE\\BackendDev\\Project\\BikeRentalAPI\\obj\\",
+      "outputPath": "d:\\_SCHOOL\\2MCT_S4_AIE\\BackendDev\\Project\\BikeRentalAPI\\BikeRentalAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

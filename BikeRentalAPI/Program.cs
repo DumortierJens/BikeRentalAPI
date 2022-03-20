@@ -60,3 +60,6 @@ app.MapPut("/biketypes", async (BikeTypeValidation validator, IRentalService ren
 
 
 app.Run("http://localhost:3000");
+
+// For Xunit testing
+public partial class Program { }
