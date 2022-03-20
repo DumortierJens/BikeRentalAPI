@@ -4,7 +4,7 @@
 GET http://localhost:3000/biketypes
 
 ### Get Bike Type By id
-GET http://localhost:3000/biketypes/6233a19df12c9bd0c3872690
+GET http://localhost:3000/biketypes/62375424181876a26480a789
 
 ### Add Bike Type
 POST http://localhost:3000/biketypes

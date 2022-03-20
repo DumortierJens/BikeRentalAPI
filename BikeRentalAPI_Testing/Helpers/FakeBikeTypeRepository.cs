@@ -12,9 +12,9 @@ public class FakeBikeTypeRepository : IBikeTypeRepository
         return Task.FromResult(bikeType);
     }
 
-    public Task<BikeType?> GetBikeTypeAsync(string id)
+    public Task<BikeType> GetBikeTypeAsync(string id)
     {
-        var bikeType = _bikeTypes.SingleOrDefault(_ => _.Id == id);
+        var bikeType = _bikeTypes.FirstOrDefault(_ => _.Id == id);
         return Task.FromResult(bikeType);
     }
 
