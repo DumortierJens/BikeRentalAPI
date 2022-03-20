@@ -9,7 +9,10 @@ public class Helper
         {
             builder.ConfigureServices(services =>
             {
-
+                var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IBikeTypeRepository));
+                services.Remove(descriptor);
+                var fakeBikeTypeRepository = new ServiceDescriptor(typeof(IBikeTypeRepository), typeof(BikeTypeRepository), ServiceLifetime.Transient);
+                services.Add(fakeBikeTypeRepository);
             });
         });
 

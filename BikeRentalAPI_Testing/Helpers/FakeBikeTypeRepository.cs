@@ -12,7 +12,7 @@ public class FakeBikeTypeRepository : IBikeTypeRepository
 
     public Task<BikeType?> GetBikeTypeAsync(string id)
     {
-        var bikeType = _bikeTypes.Find(_ => _.Id == id);
+        var bikeType = _bikeTypes.SingleOrDefault(_ => _.Id == id);
         return Task.FromResult(bikeType);
     }
 
