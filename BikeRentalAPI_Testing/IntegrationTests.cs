@@ -34,6 +34,19 @@ public class IntegrationTests
             Assert.NotNull(item);
             Assert.IsType<BikeType>(item);
         }
+
+        [Fact]
+        public async void Return_BikeType_NotFound()
+        {
+            var application = Helper.CreateApi();
+            var client = application.CreateClient();
+
+            var fakeBikeType = new BikeType() { Id = "62339d87ac01f7ff39b2d06b" };
+            FakeBikeTypeRepository.AddFakeBikeType(fakeBikeType);
+
+            var result = await client.GetAsync($"/biketypes/00039d87ac01f7ff39b2d000");
+            result.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
     }
 }
 
