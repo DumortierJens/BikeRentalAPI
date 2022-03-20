@@ -23,7 +23,11 @@ public class RentalService : IRentalService
 
     public async Task<BikeType> GetBikeTypeAsync(string id) => await _bikeTypeRepository.GetBikeTypeAsync(id);
 
-    public async Task<BikeType> AddBikeTypeAsync(BikeType bikeType) => await _bikeTypeRepository.AddBikeTypeAsync(bikeType);
+    public async Task<BikeType> AddBikeTypeAsync(BikeType bikeType)
+    {
+        bikeType.Id = null;
+        return await _bikeTypeRepository.AddBikeTypeAsync(bikeType);
+    }
 
     public async Task<BikeType> UpdateBikeTypeAsync(BikeType bikeType) => await _bikeTypeRepository.UpdateBikeTypeAsync(bikeType);
 
