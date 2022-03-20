@@ -52,6 +52,10 @@ app.MapPut("/biketypes", async (BikeTypeValidation validator, IRentalService ren
     if (validationResult.IsValid && bikeType.Id != null)
     {
         bikeType = await rentalService.UpdateBikeTypeAsync(bikeType);
+
+        if (bikeType == null)
+            return Results.NotFound();
+
         return Results.Ok(bikeType);
     }
     else

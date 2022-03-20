@@ -99,10 +99,6 @@ public class IntegrationTests
 
             var result = await client.PostAsync("/biketypes", content);
             result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-            var errors = await result.Content.ReadFromJsonAsync<List<Dictionary<string, string>>>();
-            Assert.NotNull(errors);
-            Assert.Equal(errors.Count, 2);
         }
 
         [Fact]
@@ -120,10 +116,6 @@ public class IntegrationTests
 
             var result = await client.PostAsync("/biketypes", content);
             result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-            var errors = await result.Content.ReadFromJsonAsync<List<Dictionary<string, string>>>();
-            Assert.NotNull(errors);
-            Assert.Equal(errors.Count, 5);
         }
 
         [Fact]
@@ -148,10 +140,6 @@ public class IntegrationTests
 
             var result = await client.PostAsync("/biketypes", content);
             result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-            var errors = await result.Content.ReadFromJsonAsync<List<Dictionary<string, string>>>();
-            Assert.NotNull(errors);
-            Assert.Equal(errors.Count, 5);
         }
 
         [Fact]
@@ -188,6 +176,34 @@ public class IntegrationTests
         }
 
         [Fact]
+        public async void Update_BikeType_NotFound()
+        {
+            var application = Helper.CreateApi();
+            var client = application.CreateClient();
+
+            var fakeBikeType = new BikeType() { Id = "62339d87ac01f7ff39b2d06b", Name = "Old" };
+            FakeBikeTypeRepository.AddFakeBikeType(fakeBikeType);
+
+            var payload = new BikeType()
+            {
+                Id = "62339d87ac01f7ff39b2d000",
+                Name = "Electric bike",
+                Prices = new PriceList()
+                {
+                    HalfDay = 18,
+                    Day = 23,
+                    Days2 = 35,
+                    Days3 = 41,
+                    ExtraDay = 6
+                }
+            };
+            var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+
+            var result = await client.PutAsync("/biketypes", content);
+            result.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
         public async void Update_BikeType_ValidationError()
         {
             var application = Helper.CreateApi();
@@ -213,10 +229,6 @@ public class IntegrationTests
 
             var result = await client.PutAsync("/biketypes", content);
             result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-
-            var errors = await result.Content.ReadFromJsonAsync<List<Dictionary<string, string>>>();
-            Assert.NotNull(errors);
-            Assert.Equal(errors.Count, 1);
         }
     }
 }

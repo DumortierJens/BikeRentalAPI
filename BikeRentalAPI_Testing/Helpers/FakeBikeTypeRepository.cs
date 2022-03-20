@@ -23,10 +23,17 @@ public class FakeBikeTypeRepository : IBikeTypeRepository
         return Task.FromResult(_bikeTypes);
     }
 
-    public Task<BikeType> UpdateBikeTypeAsync(BikeType bikeType)
+    public Task<BikeType> UpdateBikeTypeAsync(BikeType updatedBikeType)
     {
-        _bikeTypes.Remove(bikeType);
-        _bikeTypes.Add(bikeType);
+        var bikeType = _bikeTypes.FirstOrDefault(_ => _.Id == updatedBikeType.Id);
+
+        if (bikeType != null)
+        {
+            _bikeTypes.Remove(bikeType);
+            bikeType = updatedBikeType;
+            _bikeTypes.Add(updatedBikeType);
+        }
+
         return Task.FromResult(bikeType);
     }
 }
