@@ -55,35 +55,104 @@ public class IntegrationTests
             result.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
-        // [Fact]
-        // public async void Add_BikeType_Created()
-        // {
-        //     var application = Helper.CreateApi();
-        //     var client = application.CreateClient();
+        [Fact]
+        public async void Add_BikeType_Created()
+        {
+            var application = Helper.CreateApi();
+            var client = application.CreateClient();
 
-        //     var payload = new BikeType()
-        //     {
-        //         Id = "1",
-        //         Name = "Electric bike",
-        //         Prices = new PriceList()
-        //         {
-        //             HalfDay = 18,
-        //             Day = 23,
-        //             Days2 = 35,
-        //             Days3 = 41,
-        //             ExtraDay = 6
-        //         }
-        //     };
-        //     var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+            var payload = new BikeType()
+            {
+                Name = "Electric bike",
+                Prices = new PriceList()
+                {
+                    HalfDay = 18,
+                    Day = 23,
+                    Days2 = 35,
+                    Days3 = 41,
+                    ExtraDay = 6
+                }
+            };
+            var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
 
-        //     var result = await client.PostAsync("/biketypes", content);
-        //     result.StatusCode.Should().Be(HttpStatusCode.Created);
+            var result = await client.PostAsync("/biketypes", content);
+            result.StatusCode.Should().Be(HttpStatusCode.Created);
 
-        //     var item = await result.Content.ReadFromJsonAsync<BikeType>();
-        //     Assert.NotNull(item);
-        //     Assert.IsType<BikeType>(item);
-        //     Assert.Equal(payload, item);
-        // }
+            var item = await result.Content.ReadFromJsonAsync<BikeType>();
+            Assert.NotNull(item);
+            Assert.IsType<BikeType>(item);
+            Assert.True(payload.Id == item.Id);
+        }
+
+        [Fact]
+        public async void Add_BikeType_ValidationError_Name_PricesNotNull()
+        {
+            var application = Helper.CreateApi();
+            var client = application.CreateClient();
+
+            var payload = new BikeType()
+            {
+                Name = null,
+                Prices = null
+            };
+            var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+
+            var result = await client.PostAsync("/biketypes", content);
+            result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+            var items = await result.Content.ReadFromJsonAsync<List<Dictionary<string, string>>>();
+            Assert.NotNull(items);
+            Assert.Equal(items.Count, 2);
+        }
+
+        [Fact]
+        public async void Add_BikeType_ValidationError_PricesAllInserted()
+        {
+            var application = Helper.CreateApi();
+            var client = application.CreateClient();
+
+            var payload = new BikeType()
+            {
+                Name = "Electric bike",
+                Prices = new PriceList()
+            };
+            var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+
+            var result = await client.PostAsync("/biketypes", content);
+            result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+            var items = await result.Content.ReadFromJsonAsync<List<Dictionary<string, string>>>();
+            Assert.NotNull(items);
+            Assert.Equal(items.Count, 5);
+        }
+
+        [Fact]
+        public async void Add_BikeType_ValidationError_PricesGreaterThan0()
+        {
+            var application = Helper.CreateApi();
+            var client = application.CreateClient();
+
+            var payload = new BikeType()
+            {
+                Name = "Electric bike",
+                Prices = new PriceList()
+                {
+                    HalfDay = -1,
+                    Day = -2,
+                    Days2 = 0,
+                    Days3 = -2,
+                    ExtraDay = -7
+                }
+            };
+            var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+
+            var result = await client.PostAsync("/biketypes", content);
+            result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+            var items = await result.Content.ReadFromJsonAsync<List<Dictionary<string, string>>>();
+            Assert.NotNull(items);
+            Assert.Equal(items.Count, 5);
+        }
     }
 }
 
