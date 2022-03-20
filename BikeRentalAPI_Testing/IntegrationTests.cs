@@ -153,6 +153,39 @@ public class IntegrationTests
             Assert.NotNull(items);
             Assert.Equal(items.Count, 5);
         }
+
+        [Fact]
+        public async void Update_BikeType_OK()
+        {
+            var application = Helper.CreateApi();
+            var client = application.CreateClient();
+
+            var fakeBikeType = new BikeType() { Id = "62339d87ac01f7ff39b2d06b", Name = "Old" };
+            FakeBikeTypeRepository.AddFakeBikeType(fakeBikeType);
+
+            var payload = new BikeType()
+            {
+                Id = "62339d87ac01f7ff39b2d06b",
+                Name = "Electric bike",
+                Prices = new PriceList()
+                {
+                    HalfDay = 18,
+                    Day = 23,
+                    Days2 = 35,
+                    Days3 = 41,
+                    ExtraDay = 6
+                }
+            };
+            var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+
+            var result = await client.PutAsync("/biketypes", content);
+            result.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            var item = await result.Content.ReadFromJsonAsync<BikeType>();
+            Assert.NotNull(item);
+            Assert.IsType<BikeType>(item);
+            Assert.True(item.Name != "Old");
+        }
     }
 }
 
