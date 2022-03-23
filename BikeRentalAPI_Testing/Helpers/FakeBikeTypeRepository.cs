@@ -1,6 +1,6 @@
 namespace BikeRentalAPI_Testing.Helpers;
 
-public class FakeBikeTypeRepository : IBikeTypeRepository
+public class FakeBikeTypeRepository : IBikeRepository
 {
     public static List<BikeType> _bikeTypes = new List<BikeType>();
 
