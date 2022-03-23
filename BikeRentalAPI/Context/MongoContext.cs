@@ -5,6 +5,7 @@ public interface IMongoContext
     IMongoClient Client { get; }
     IMongoDatabase Database { get; }
     IMongoCollection<Bike> BikeCollection { get; }
+    IMongoCollection<BikePrice> BikePriceCollection { get; }
     IMongoCollection<Location> LocationCollection { get; }
     IMongoCollection<Rental> RentalCollection { get; }
 }
@@ -36,6 +37,14 @@ public class MongoContext : IMongoContext
         get
         {
             return _database.GetCollection<Bike>(_settings.BikeCollection);
+        }
+    }
+
+    public IMongoCollection<BikePrice> BikePriceCollection
+    {
+        get
+        {
+            return _database.GetCollection<BikePrice>(_settings.BikePriceCollection);
         }
     }
 
