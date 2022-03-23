@@ -13,6 +13,7 @@ builder.Services.AddTransient<IRentalService, RentalService>();
 
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<BikeValidation>());
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LocationValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<BikePriceValidation>());
 
 var app = builder.Build();
 app.MapGet("/", () => "API is working!");
@@ -20,14 +21,14 @@ app.MapGet("/", () => "API is working!");
 
 #region Bikes
 
-app.MapGet("/bikes", async (IRentalService rentalService) =>
+app.MapGet("/bikes", async (IRentalLocationService rentalLocationService) =>
 {
-    return Results.Ok(await rentalService.GetBikes());
+    return Results.Ok(await rentalLocationService.GetBikes());
 });
 
-app.MapGet("/bikes/{id}", async (IRentalService rentalService, string id) =>
+app.MapGet("/bikes/{id}", async (IRentalLocationService rentalLocationService, string id) =>
 {
-    var bike = await rentalService.GetBike(id);
+    var bike = await rentalLocationService.GetBike(id);
 
     if (bike == null)
         return Results.NotFound();
@@ -35,12 +36,12 @@ app.MapGet("/bikes/{id}", async (IRentalService rentalService, string id) =>
     return Results.Ok(bike);
 });
 
-app.MapPost("/bikes", async (BikeValidation validator, IRentalService rentalService, Bike bike) =>
+app.MapPost("/bikes", async (BikeValidation validator, IRentalLocationService rentalLocationService, Bike bike) =>
 {
     var validationResult = validator.Validate(bike);
     if (validationResult.IsValid)
     {
-        bike = await rentalService.AddBike(bike);
+        bike = await rentalLocationService.AddBike(bike);
         return Results.Created($"/biketype/{bike.Id}", bike);
     }
     else
@@ -50,12 +51,12 @@ app.MapPost("/bikes", async (BikeValidation validator, IRentalService rentalServ
     }
 });
 
-app.MapPut("/bikes", async (BikeValidation validator, IRentalService rentalService, Bike bike) =>
+app.MapPut("/bikes", async (BikeValidation validator, IRentalLocationService rentalLocationService, Bike bike) =>
 {
     var validationResult = validator.Validate(bike);
     if (validationResult.IsValid && bike.Id != null)
     {
-        bike = await rentalService.UpdateBike(bike);
+        bike = await rentalLocationService.UpdateBike(bike);
 
         if (bike == null)
             return Results.NotFound();
@@ -73,14 +74,14 @@ app.MapPut("/bikes", async (BikeValidation validator, IRentalService rentalServi
 
 #region Locations
 
-app.MapGet("/locations", async (IRentalService rentalService) =>
+app.MapGet("/locations", async (IRentalLocationService rentalLocationService) =>
 {
-    return Results.Ok(await rentalService.GetLocations());
+    return Results.Ok(await rentalLocationService.GetLocations());
 });
 
-app.MapGet("/locations/{id}", async (IRentalService rentalService, string id) =>
+app.MapGet("/locations/{id}", async (IRentalLocationService rentalLocationService, string id) =>
 {
-    var location = await rentalService.GetLocation(id);
+    var location = await rentalLocationService.GetLocation(id);
 
     if (location == null)
         return Results.NotFound();
@@ -88,12 +89,12 @@ app.MapGet("/locations/{id}", async (IRentalService rentalService, string id) =>
     return Results.Ok(location);
 });
 
-app.MapPost("/locations", async (LocationValidation validator, IRentalService rentalService, Location location) =>
+app.MapPost("/locations", async (LocationValidation validator, IRentalLocationService rentalLocationService, Location location) =>
 {
     var validationResult = validator.Validate(location);
     if (validationResult.IsValid)
     {
-        location = await rentalService.AddLocation(location);
+        location = await rentalLocationService.AddLocation(location);
         return Results.Created($"/biketype/{location.Id}", location);
     }
     else
@@ -103,17 +104,51 @@ app.MapPost("/locations", async (LocationValidation validator, IRentalService re
     }
 });
 
-app.MapPut("/locations", async (LocationValidation validator, IRentalService rentalService, Location location) =>
+app.MapPut("/locations", async (LocationValidation validator, IRentalLocationService rentalLocationService, Location location) =>
 {
     var validationResult = validator.Validate(location);
     if (validationResult.IsValid && location.Id != null)
     {
-        location = await rentalService.UpdateLocation(location);
+        location = await rentalLocationService.UpdateLocation(location);
 
         if (location == null)
             return Results.NotFound();
 
         return Results.Ok(location);
+    }
+    else
+    {
+        var errors = validationResult.Errors.Select(x => new { errors = x.ErrorMessage });
+        return Results.BadRequest(errors);
+    }
+});
+
+#endregion
+
+#region Bike Prices
+
+app.MapGet("/locations/{locationId}/bikes/prices", async (IRentalLocationService rentalLocationService, string locationId) =>
+{
+    return Results.Ok(await rentalLocationService.GetBikePricesByLocation(new Location() { Id = locationId }));
+});
+
+app.MapGet("/locations/{locationId}/bikes/{bikeId}/prices", async (IRentalLocationService rentalLocationService, string locationId, string bikeId) =>
+{
+    var bikePrice = await rentalLocationService.GetBikePrice(new Location() { Id = locationId }, new Bike() { Id = bikeId });
+
+    if (bikePrice == null)
+        return Results.NotFound();
+
+    return Results.Ok(bikePrice);
+});
+
+app.MapPost("/locations/{locationId}/bikes/{bikeId}/prices", async (BikePriceValidation validator, IRentalLocationService rentalLocationService, BikePrice bikePrice) =>
+{
+    var validationResult = validator.Validate(bikePrice);
+    if (validationResult.IsValid)
+    {
+        bikePrice = await rentalLocationService.UpdateOrAddBikePrice(bikePrice);
+        return Results.Created($"/locations/{bikePrice.Location.Id}/bikes/{bikePrice.Bike.Id}", bikePrice);
     }
     else
     {
