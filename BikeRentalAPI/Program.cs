@@ -6,7 +6,9 @@ builder.Services.AddTransient<IMongoContext, MongoContext>();
 
 builder.Services.AddTransient<IBikeRepository, BikeRepository>();
 builder.Services.AddTransient<ILocationRepository, LocationRepository>();
+builder.Services.AddTransient<IBikePriceRepository, BikePriceRepository>();
 
+builder.Services.AddTransient<IRentalLocationService, RentalLocationService>();
 builder.Services.AddTransient<IRentalService, RentalService>();
 
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<BikeValidation>());

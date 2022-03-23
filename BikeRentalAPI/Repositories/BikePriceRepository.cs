@@ -1,6 +1,14 @@
 namespace BikeRentalAPI.Repositories;
 
-public class BikePriceRepository
+public interface IBikePriceRepository
+{
+    Task<BikePrice> AddBikePrice(BikePrice bikePrice);
+    Task<BikePrice> GetBikePrice(Location location, Bike bike);
+    Task<List<BikePrice>> GetBikePricesByLocation(Location location);
+    Task<BikePrice> UpdateBikePrice(BikePrice bikePrice);
+}
+
+public class BikePriceRepository : IBikePriceRepository
 {
     private readonly IMongoContext _context;
 
