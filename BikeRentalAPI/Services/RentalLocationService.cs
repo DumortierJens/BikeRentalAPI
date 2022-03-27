@@ -3,16 +3,17 @@ namespace BikeRentalAPI.Services;
 public interface IRentalLocationService
 {
     Task<Bike> AddBike(Bike bike);
+    Task<BikePrice> AddBikePrice(BikePrice bikePrice);
     Task<Location> AddLocation(Location location);
     Task<Bike> GetBike(string id);
-    Task<BikePrice> GetBikePrice(Location location, Bike bike);
-    Task<List<BikePrice>> GetBikePricesByLocation(Location location);
+    Task<BikePrice> GetBikePrice(string locationId, string bikeId);
+    Task<List<BikePrice>> GetBikePricesByLocation(string locationId);
     Task<List<Bike>> GetBikes();
     Task<Location> GetLocation(string id);
     Task<List<Location>> GetLocations();
     Task<Bike> UpdateBike(Bike bike);
+    Task<BikePrice> UpdateBikePrice(BikePrice bikePrice);
     Task<Location> UpdateLocation(Location location);
-    Task<BikePrice> UpdateOrAddBikePrice(BikePrice bikePrice);
 }
 
 public class RentalLocationService : IRentalLocationService
@@ -66,24 +67,30 @@ public class RentalLocationService : IRentalLocationService
 
     #region Bike Prices
 
-    public async Task<List<BikePrice>> GetBikePricesByLocation(Location location) => await _bikePriceRepository.GetBikePricesByLocation(location);
+    public async Task<List<BikePrice>> GetBikePricesByLocation(string locationId) => await _bikePriceRepository.GetBikePricesByLocation(locationId);
 
-    public async Task<BikePrice> GetBikePrice(Location location, Bike bike) => await _bikePriceRepository.GetBikePrice(location, bike);
+    public async Task<BikePrice> GetBikePrice(string locationId, string bikeId) => await _bikePriceRepository.GetBikePrice(locationId, bikeId);
 
-    public async Task<BikePrice> UpdateOrAddBikePrice(BikePrice bikePrice)
+    public async Task<BikePrice> AddBikePrice(BikePrice bikePrice)
     {
-        BikePrice _bikePrice = await _bikePriceRepository.GetBikePrice(bikePrice.Location, bikePrice.Bike);
+        bikePrice.Id = null;
 
-        if (_bikePrice == null)
-        {
-            bikePrice.Id = null;
-            return await _bikePriceRepository.AddBikePrice(bikePrice);
-        }
-        else
-        {
-            return await _bikePriceRepository.UpdateBikePrice(bikePrice);
-        }
+        // Check for bikeprice
+        if (await _bikePriceRepository.GetBikePrice(bikePrice.LocationId, bikePrice.BikeId) != null)
+            throw new ArgumentException("Bikeprice already exists");
+
+        // Check BikeId
+        if (await _bikeRepository.GetBike(bikePrice.BikeId) == null)
+            throw new ArgumentException("Bike not found");
+
+        // Check LocationId
+        if (await _locationRepository.GetLocation(bikePrice.LocationId) == null)
+            throw new ArgumentException("Location not found");
+
+        return await _bikePriceRepository.AddBikePrice(bikePrice);
     }
+
+    public async Task<BikePrice> UpdateBikePrice(BikePrice bikePrice) => await _bikePriceRepository.UpdateBikePrice(bikePrice);
 
     #endregion
 }

@@ -1,0 +1,92 @@
+###### Bike Types ######
+
+### Get Bikes
+GET http://localhost:3000/bikes
+
+### Get Bike By id
+GET http://localhost:3000/bikes/62404058637894569c2dfe8a
+
+### Add Bike
+POST http://localhost:3000/bikes
+Content-Type: application/json
+
+{
+    "name": "City bike"
+}
+
+### Update Bike
+PUT http://localhost:3000/bikes
+Content-Type: application/json
+
+{
+    "id": "62404058637894569c2dfe8a",
+    "name": "Electric bike"
+}
+
+###### Locations ######
+
+### Get Locations
+GET http://localhost:3000/locations
+
+### Get Location By id
+GET http://localhost:3000/locations/623b6d8db01b44ded4987a58
+
+### Add Location
+POST http://localhost:3000/locations
+Content-Type: application/json
+
+{
+    "name": "Bike Rental Kortrijk",
+    "city": "Kortrijk"
+}
+
+### Update Location
+PUT http://localhost:3000/locations
+Content-Type: application/json
+
+{
+    "id": "6240408b637894569c2dfe8c",
+    "name": "Bike Rental City",
+    "city": "Kortrijk"
+}
+
+###### Bike Prices ######
+
+### Get Bike Prices by Location
+GET http://localhost:3000/locations/6240408b637894569c2dfe8c/prices
+
+### Get Bike Price by Location & Bike
+GET http://localhost:3000/locations/6240408b637894569c2dfe8c/bikes/62404058637894569c2dfe8a/prices
+
+### Add Bike Price
+POST http://localhost:3000/prices
+Content-Type: application/json
+
+{
+    "locationId": "6240408b637894569c2dfe8c",
+    "bikeId": "62404058637894569c2dfe8a",
+    "prices": {
+        "halfDay": 7,
+        "day": 12,
+        "twoDays": 22,
+        "treeDays": 30,
+        "extraDay": 9
+    }
+}
+
+### Update Bike Prices
+PUT http://localhost:3000/prices
+Content-Type: application/json
+
+{
+    "id": "62406ced9870f98e93c2b5d0",
+    "locationId": "6240408b637894569c2dfe8c",
+    "bikeId": "62404058637894569c2dfe8a",
+    "prices": {
+        "halfDay": 7,
+        "day": 12,
+        "twoDays": 22,
+        "treeDays": 30,
+        "extraDay": 9
+    }
+}

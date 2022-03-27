@@ -21,17 +21,17 @@ public class BikeRepository : IBikeRepository
 
     public async Task<Bike> GetBike(string id) => await _context.BikeCollection.Find(_ => _.Id == id).FirstOrDefaultAsync();
 
-    public async Task<Bike> AddBike(Bike bikeType)
+    public async Task<Bike> AddBike(Bike bike)
     {
-        await _context.BikeCollection.InsertOneAsync(bikeType);
-        return bikeType;
+        await _context.BikeCollection.InsertOneAsync(bike);
+        return bike;
     }
 
-    public async Task<Bike> UpdateBike(Bike bikeType)
+    public async Task<Bike> UpdateBike(Bike bike)
     {
-        var filter = Builders<Bike>.Filter.Eq("id", bikeType.Id);
-        var update = Builders<Bike>.Update.Set("name", bikeType.Name);
-        var result = await _context.BikeCollection.UpdateOneAsync(filter, update);
-        return bikeType;
+        var filter = Builders<Bike>.Filter.Eq("Id", bike.Id);
+        var update = Builders<Bike>.Update.Set("Name", bike.Name);
+        var opts = new FindOneAndUpdateOptions<Bike>() { ReturnDocument = ReturnDocument.After };
+        return await _context.BikeCollection.FindOneAndUpdateAsync(filter, update, opts);
     }
 }

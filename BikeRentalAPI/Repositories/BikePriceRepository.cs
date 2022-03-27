@@ -3,8 +3,8 @@ namespace BikeRentalAPI.Repositories;
 public interface IBikePriceRepository
 {
     Task<BikePrice> AddBikePrice(BikePrice bikePrice);
-    Task<BikePrice> GetBikePrice(Location location, Bike bike);
-    Task<List<BikePrice>> GetBikePricesByLocation(Location location);
+    Task<BikePrice> GetBikePrice(string locationId, string bikeId);
+    Task<List<BikePrice>> GetBikePricesByLocation(string locationId);
     Task<BikePrice> UpdateBikePrice(BikePrice bikePrice);
 }
 
@@ -17,9 +17,9 @@ public class BikePriceRepository : IBikePriceRepository
         _context = context;
     }
 
-    public async Task<List<BikePrice>> GetBikePricesByLocation(Location location) => await _context.BikePriceCollection.Find(_ => (_.Location != null && _.Location.Id == location.Id)).ToListAsync();
+    public async Task<List<BikePrice>> GetBikePricesByLocation(string locationId) => await _context.BikePriceCollection.Find(_ => (_.LocationId == locationId)).ToListAsync();
 
-    public async Task<BikePrice> GetBikePrice(Location location, Bike bike) => await _context.BikePriceCollection.Find(_ => (_.Location != null && _.Location.Id == location.Id && _.Bike != null && _.Bike.Id == bike.Id)).FirstOrDefaultAsync();
+    public async Task<BikePrice> GetBikePrice(string locationId, string bikeId) => await _context.BikePriceCollection.Find(_ => (_.LocationId == locationId && _.BikeId == bikeId)).FirstOrDefaultAsync();
 
     public async Task<BikePrice> AddBikePrice(BikePrice bikePrice)
     {

@@ -29,10 +29,10 @@ public class LocationRepository : ILocationRepository
 
     public async Task<Location> UpdateLocation(Location location)
     {
-        var filter = Builders<Location>.Filter.Eq("id", location.Id);
-        var update = Builders<Location>.Update.Set("name", location.Name);
-        var result = await _context.LocationCollection.UpdateOneAsync(filter, update);
-        return location;
+        var filter = Builders<Location>.Filter.Eq("Id", location.Id);
+        var update = Builders<Location>.Update.Set("Name", location.Name).Set("City", location.City);
+        var opts = new FindOneAndUpdateOptions<Location>() { ReturnDocument = ReturnDocument.After };
+        return await _context.LocationCollection.FindOneAndUpdateAsync(filter, update, opts);
     }
 }
 
