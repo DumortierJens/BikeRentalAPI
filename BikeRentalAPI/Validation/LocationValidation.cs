@@ -8,5 +8,3 @@ public class LocationValidation : AbstractValidator<Location>
         RuleFor(x => x.City).NotEmpty();
     }
 }
-
-

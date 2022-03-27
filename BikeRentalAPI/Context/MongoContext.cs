@@ -4,7 +4,8 @@ public interface IMongoContext
 {
     IMongoClient Client { get; }
     IMongoDatabase Database { get; }
-    IMongoCollection<BikeType> BikeTypeCollection { get; }
+    IMongoCollection<Bike> BikeCollection { get; }
+    IMongoCollection<BikePrice> BikePriceCollection { get; }
     IMongoCollection<Location> LocationCollection { get; }
     IMongoCollection<Rental> RentalCollection { get; }
 }
@@ -31,11 +32,19 @@ public class MongoContext : IMongoContext
         _database = _client.GetDatabase(_settings.DatabaseName);
     }
 
-    public IMongoCollection<BikeType> BikeTypeCollection
+    public IMongoCollection<Bike> BikeCollection
     {
         get
         {
-            return _database.GetCollection<BikeType>(_settings.BikeTypeCollection);
+            return _database.GetCollection<Bike>(_settings.BikeCollection);
+        }
+    }
+
+    public IMongoCollection<BikePrice> BikePriceCollection
+    {
+        get
+        {
+            return _database.GetCollection<BikePrice>(_settings.BikePriceCollection);
         }
     }
 
