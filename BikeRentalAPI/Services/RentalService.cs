@@ -2,7 +2,7 @@ namespace BikeRentalAPI.Services;
 
 public interface IRentalService
 {
-    Task<Rental> EndRental(string rentalId);
+    Task<Rental> StopRental(string rentalId);
     Task<Rental> GetRental(string id);
     Task<List<Rental>> GetRentalsByLocation(string locationId);
     Task<Rental> StartRental(Rental rental);
@@ -46,7 +46,7 @@ public class RentalService : IRentalService
         return await _rentalRepository.AddRental(rental);
     }
 
-    public async Task<Rental> EndRental(string rentalId)
+    public async Task<Rental> StopRental(string rentalId)
     {
         if (rentalId == null)
             throw new ArgumentException();
@@ -55,10 +55,13 @@ public class RentalService : IRentalService
         if (rental == null)
             throw new ArgumentException("Rental not found");
 
+        if (rental.EndTime != null)
+            throw new ArgumentException("Rental is already ended");
+
         rental.EndTime = DateTime.Now;
         rental.Price = await CalculatePrice(rental);
 
-        return await _rentalRepository.AddRental(rental);
+        return await _rentalRepository.EndRental(rental);
     }
 
     public async Task<Rental> UpdateRentalDetails(Rental rental) => await _rentalRepository.UpdateRentalDetails(rental);

@@ -185,7 +185,7 @@ app.MapPut("/prices", async (BikePriceValidation validator, IRentalLocationServi
 
 #region Rental
 
-app.MapGet("/rentals/location/{locationId}", async (IRentalService rentalService, string locationId) => await rentalService.GetRentalsByLocation(locationId));
+app.MapGet("/rentals/locations/{locationId}", async (IRentalService rentalService, string locationId) => await rentalService.GetRentalsByLocation(locationId));
 
 app.MapGet("/rentals/{id}", async (IRentalService rentalService, string id) =>
 {
@@ -209,7 +209,7 @@ app.MapPost("/rentals/start", async (RentalValidation validator, IRentalService 
         }
         catch (ArgumentException ex)
         {
-            return Results.BadRequest(ex);
+            return Results.BadRequest(new { error = ex.Message });
         }
     }
     else
@@ -219,16 +219,16 @@ app.MapPost("/rentals/start", async (RentalValidation validator, IRentalService 
     }
 });
 
-app.MapPost("/rentals/{id}/end", async (IRentalService rentalService, string id) =>
+app.MapPost("/rentals/{id}/stop", async (IRentalService rentalService, string id) =>
 {
     try
     {
-        var rental = await rentalService.EndRental(id);
+        var rental = await rentalService.StopRental(id);
         return Results.Ok(rental);
     }
     catch (ArgumentException ex)
     {
-        return Results.BadRequest(ex);
+        return Results.BadRequest(new { error = ex.Message });
     }
 });
 

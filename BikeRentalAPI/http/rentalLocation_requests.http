@@ -3,7 +3,7 @@
 ### Get Bikes
 GET http://localhost:3000/bikes
 
-### Get Bike By id
+### Get Bike by id
 GET http://localhost:3000/bikes/62404058637894569c2dfe8a
 
 ### Add Bike
@@ -28,7 +28,7 @@ Content-Type: application/json
 ### Get Locations
 GET http://localhost:3000/locations
 
-### Get Location By id
+### Get Location by id
 GET http://localhost:3000/locations/623b6d8db01b44ded4987a58
 
 ### Add Location
@@ -90,3 +90,29 @@ Content-Type: application/json
         "extraDay": 9
     }
 }
+
+###### Rentals ######
+
+### Get Rentals by Location
+GET http://localhost:3000/rentals/locations/6240408b637894569c2dfe8c
+
+### Get Rental by Id
+GET http://localhost:3000/rentals/625bd132e113bceeeadcfe5e
+
+### Start Rental
+POST http://localhost:3000/rentals/start
+Content-Type: application/json
+
+{
+    "name": "Jens Dumortier",
+    "tel": "0412345678",
+    "bike": {
+        "id": "62404058637894569c2dfe8a"
+    },
+    "location": {
+        "id": "6240408b637894569c2dfe8c"
+    }
+}
+
+### Stop Rental
+POST http://localhost:3000/rentals/625bd132e113bceeeadcfe5e/stop
