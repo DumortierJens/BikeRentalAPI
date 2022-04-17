@@ -8,6 +8,7 @@ global using MongoDB.Bson.Serialization.Attributes;
 global using MongoDB.Driver;
 global using FluentValidation;
 global using FluentValidation.AspNetCore;
+global using Swashbuckle.AspNetCore;
 
 // LOCAL
 global using BikeRentalAPI.Configuration;
