@@ -4,16 +4,16 @@ public interface IRentalLocationService
 {
     Task<Bike> AddBike(Bike bike);
     Task<BikePrice> AddBikePrice(BikePrice bikePrice);
-    Task<Location> AddLocation(Location location);
+    Task<RentalLocation> AddLocation(RentalLocation location);
     Task<Bike> GetBike(string id);
     Task<BikePrice> GetBikePrice(string locationId, string bikeId);
     Task<List<BikePrice>> GetBikePricesByLocation(string locationId);
     Task<List<Bike>> GetBikes();
-    Task<Location> GetLocation(string id);
-    Task<List<Location>> GetLocations();
+    Task<RentalLocation> GetLocation(string id);
+    Task<List<RentalLocation>> GetLocations();
     Task<Bike> UpdateBike(Bike bike);
     Task<BikePrice> UpdateBikePrice(BikePrice bikePrice);
-    Task<Location> UpdateLocation(Location location);
+    Task<RentalLocation> UpdateLocation(RentalLocation location);
 }
 
 public class RentalLocationService : IRentalLocationService
@@ -49,17 +49,17 @@ public class RentalLocationService : IRentalLocationService
 
     #region Locations
 
-    public async Task<List<Location>> GetLocations() => await _locationRepository.GetLocations();
+    public async Task<List<RentalLocation>> GetLocations() => await _locationRepository.GetLocations();
 
-    public async Task<Location> GetLocation(string id) => await _locationRepository.GetLocation(id);
+    public async Task<RentalLocation> GetLocation(string id) => await _locationRepository.GetLocation(id);
 
-    public async Task<Location> AddLocation(Location location)
+    public async Task<RentalLocation> AddLocation(RentalLocation location)
     {
         location.Id = null;
         return await _locationRepository.AddLocation(location);
     }
 
-    public async Task<Location> UpdateLocation(Location location) => await _locationRepository.UpdateLocation(location);
+    public async Task<RentalLocation> UpdateLocation(RentalLocation location) => await _locationRepository.UpdateLocation(location);
 
     #endregion
 

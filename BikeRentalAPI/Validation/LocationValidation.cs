@@ -1,6 +1,6 @@
 namespace BikeRentalAPI.Validation;
 
-public class LocationValidation : AbstractValidator<Location>
+public class LocationValidation : AbstractValidator<RentalLocation>
 {
     public LocationValidation()
     {

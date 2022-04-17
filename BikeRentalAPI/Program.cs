@@ -1,23 +1,39 @@
 var builder = WebApplication.CreateBuilder(args);
 
+// Mongo Context
 var mongoSettings = builder.Configuration.GetSection("MongoConnection");
 builder.Services.Configure<DatabaseSettings>(mongoSettings);
 builder.Services.AddTransient<IMongoContext, MongoContext>();
 
+// Repositories
 builder.Services.AddTransient<IBikeRepository, BikeRepository>();
 builder.Services.AddTransient<ILocationRepository, LocationRepository>();
 builder.Services.AddTransient<IBikePriceRepository, BikePriceRepository>();
+builder.Services.AddTransient<IRentalRepository, RentalRepository>();
 
+// Services
 builder.Services.AddTransient<IRentalLocationService, RentalLocationService>();
 builder.Services.AddTransient<IRentalService, RentalService>();
 
+// Validation
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<BikeValidation>());
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LocationValidation>());
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<BikePriceValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RentalValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RentalDetailsValidation>());
 
+// GraphQL 
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Queries>();
+// .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
+// .AddMutationType<Mutation>();
+
+// App
 var app = builder.Build();
-app.MapGet("/", () => "API is working!");
+app.MapGraphQL();
 
+app.MapGet("/", () => "API is working!");
 
 #region Bikes
 
@@ -89,7 +105,7 @@ app.MapGet("/locations/{id}", async (IRentalLocationService rentalLocationServic
     return Results.Ok(location);
 });
 
-app.MapPost("/locations", async (LocationValidation validator, IRentalLocationService rentalLocationService, Location location) =>
+app.MapPost("/locations", async (LocationValidation validator, IRentalLocationService rentalLocationService, RentalLocation location) =>
 {
     var validationResult = validator.Validate(location);
     if (validationResult.IsValid)
@@ -104,7 +120,7 @@ app.MapPost("/locations", async (LocationValidation validator, IRentalLocationSe
     }
 });
 
-app.MapPut("/locations", async (LocationValidation validator, IRentalLocationService rentalLocationService, Location location) =>
+app.MapPut("/locations", async (LocationValidation validator, IRentalLocationService rentalLocationService, RentalLocation location) =>
 {
     var validationResult = validator.Validate(location);
     if (validationResult.IsValid && location.Id != null)
@@ -181,9 +197,74 @@ app.MapPut("/prices", async (BikePriceValidation validator, IRentalLocationServi
 
 #endregion
 
+#region Rental
+
+app.MapGet("/rentals/locations/{locationId}", async (IRentalService rentalService, string locationId) => await rentalService.GetRentalsByLocation(locationId));
+
+app.MapGet("/rentals/{id}", async (IRentalService rentalService, string id) =>
+{
+    var rental = await rentalService.GetRental(id);
+
+    if (rental == null)
+        return Results.NotFound();
+
+    return Results.Ok(rental);
+});
+
+app.MapPost("/rentals/start", async (RentalValidation validator, IRentalService rentalService, Rental rental) =>
+{
+    var validationResult = validator.Validate(rental);
+    if (validationResult.IsValid)
+    {
+        try
+        {
+            rental = await rentalService.StartRental(rental);
+            return Results.Created($"/rentals/{rental.Id}", rental);
+        }
+        catch (ArgumentException ex)
+        {
+            return Results.BadRequest(new { error = ex.Message });
+        }
+    }
+    else
+    {
+        var errors = validationResult.Errors.Select(x => new { errors = x.ErrorMessage });
+        return Results.BadRequest(errors);
+    }
+});
+
+app.MapPost("/rentals/{id}/stop", async (IRentalService rentalService, string id) =>
+{
+    try
+    {
+        var rental = await rentalService.StopRental(id);
+        return Results.Ok(rental);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(new { error = ex.Message });
+    }
+});
+
+app.MapPut("/rentals", async (RentalDetailsValidation validator, IRentalService rentalService, Rental rental) =>
+{
+    var validationResult = validator.Validate(rental);
+    if (validationResult.IsValid)
+    {
+        rental = await rentalService.UpdateRentalDetails(rental);
+        return Results.Ok(rental);
+    }
+    else
+    {
+        var errors = validationResult.Errors.Select(x => new { errors = x.ErrorMessage });
+        return Results.BadRequest(errors);
+    }
+});
+
+#endregion
 
 app.Run("http://localhost:3000");
 // app.Run();
 
-// For Xunit testing
+// For XUnit testing
 public partial class Program { }

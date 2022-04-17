@@ -2,10 +2,10 @@ namespace BikeRentalAPI.Repositories;
 
 public interface ILocationRepository
 {
-    Task<Location> AddLocation(Location location);
-    Task<Location> GetLocation(string id);
-    Task<List<Location>> GetLocations();
-    Task<Location> UpdateLocation(Location location);
+    Task<RentalLocation> AddLocation(RentalLocation location);
+    Task<RentalLocation> GetLocation(string id);
+    Task<List<RentalLocation>> GetLocations();
+    Task<RentalLocation> UpdateLocation(RentalLocation location);
 }
 
 public class LocationRepository : ILocationRepository
@@ -17,21 +17,21 @@ public class LocationRepository : ILocationRepository
         _context = context;
     }
 
-    public async Task<List<Location>> GetLocations() => await _context.LocationCollection.Find(_ => true).ToListAsync();
+    public async Task<List<RentalLocation>> GetLocations() => await _context.LocationCollection.Find(_ => true).ToListAsync();
 
-    public async Task<Location> GetLocation(string id) => await _context.LocationCollection.Find(_ => _.Id == id).FirstOrDefaultAsync();
+    public async Task<RentalLocation> GetLocation(string id) => await _context.LocationCollection.Find(_ => _.Id == id).FirstOrDefaultAsync();
 
-    public async Task<Location> AddLocation(Location location)
+    public async Task<RentalLocation> AddLocation(RentalLocation location)
     {
         await _context.LocationCollection.InsertOneAsync(location);
         return location;
     }
 
-    public async Task<Location> UpdateLocation(Location location)
+    public async Task<RentalLocation> UpdateLocation(RentalLocation location)
     {
-        var filter = Builders<Location>.Filter.Eq("Id", location.Id);
-        var update = Builders<Location>.Update.Set("Name", location.Name).Set("City", location.City);
-        var opts = new FindOneAndUpdateOptions<Location>() { ReturnDocument = ReturnDocument.After };
+        var filter = Builders<RentalLocation>.Filter.Eq("Id", location.Id);
+        var update = Builders<RentalLocation>.Update.Set("Name", location.Name).Set("City", location.City);
+        var opts = new FindOneAndUpdateOptions<RentalLocation>() { ReturnDocument = ReturnDocument.After };
         return await _context.LocationCollection.FindOneAndUpdateAsync(filter, update, opts);
     }
 }
