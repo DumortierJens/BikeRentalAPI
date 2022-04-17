@@ -43,6 +43,10 @@ public class RentalService : IRentalService
         if (rental.Bike == null)
             throw new ArgumentException("Bike not found");
 
+        var bikePrice = await _bikePriceRepository.GetBikePrice(rental.Location.Id, rental.Bike.Id);
+        if (bikePrice == null)
+            throw new ArgumentException("Bike not found in location");
+
         return await _rentalRepository.AddRental(rental);
     }
 
