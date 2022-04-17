@@ -29,9 +29,15 @@ builder.Services
 // .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
 // .AddMutationType<Mutation>();
 
+// Swagger Documentation
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 // App
 var app = builder.Build();
 app.MapGraphQL();
+app.MapSwagger();
+app.UseSwaggerUI();
 
 app.MapGet("/", () => "API is working!");
 
@@ -42,9 +48,9 @@ app.MapGet("/bikes", async (IRentalLocationService rentalLocationService) =>
     return Results.Ok(await rentalLocationService.GetBikes());
 });
 
-app.MapGet("/bikes/{id}", async (IRentalLocationService rentalLocationService, string id) =>
+app.MapGet("/bikes/{bikeId}", async (IRentalLocationService rentalLocationService, string bikeId) =>
 {
-    var bike = await rentalLocationService.GetBike(id);
+    var bike = await rentalLocationService.GetBike(bikeId);
 
     if (bike == null)
         return Results.NotFound();
@@ -201,9 +207,9 @@ app.MapPut("/prices", async (BikePriceValidation validator, IRentalLocationServi
 
 app.MapGet("/rentals/locations/{locationId}", async (IRentalService rentalService, string locationId) => await rentalService.GetRentalsByLocation(locationId));
 
-app.MapGet("/rentals/{id}", async (IRentalService rentalService, string id) =>
+app.MapGet("/rentals/{rentalId}", async (IRentalService rentalService, string rentalId) =>
 {
-    var rental = await rentalService.GetRental(id);
+    var rental = await rentalService.GetRental(rentalId);
 
     if (rental == null)
         return Results.NotFound();
@@ -233,11 +239,11 @@ app.MapPost("/rentals/start", async (RentalValidation validator, IRentalService 
     }
 });
 
-app.MapPost("/rentals/{id}/stop", async (IRentalService rentalService, string id) =>
+app.MapPost("/rentals/{rentalId}/stop", async (IRentalService rentalService, string rentalId) =>
 {
     try
     {
-        var rental = await rentalService.StopRental(id);
+        var rental = await rentalService.StopRental(rentalId);
         return Results.Ok(rental);
     }
     catch (ArgumentException ex)
