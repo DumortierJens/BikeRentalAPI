@@ -41,6 +41,20 @@ app.UseSwaggerUI();
 
 app.MapGet("/", () => "API is working!");
 
+app.UseExceptionHandler(c => c.Run(async context =>
+{
+    var exception = context.Features
+        .Get<IExceptionHandlerFeature>()
+        ?.Error;
+    if (exception is not null)
+    {
+        var response = new { error = exception.Message };
+        context.Response.StatusCode = 400;
+
+        await context.Response.WriteAsJsonAsync(response);
+    }
+}));
+
 #region Bikes
 
 app.MapGet("/bikes", async (IRentalLocationService rentalLocationService) =>
@@ -64,19 +78,22 @@ app.MapPost("/bikes", async (BikeValidation validator, IRentalLocationService re
     if (validationResult.IsValid)
     {
         bike = await rentalLocationService.AddBike(bike);
-        return Results.Created($"/biketype/{bike.Id}", bike);
+        return Results.Created($"/bikes/{bike.Id}", bike);
     }
     else
     {
-        var errors = validationResult.Errors.Select(x => new { errors = x.ErrorMessage });
+        var errors = validationResult.Errors.Select(x => new { error = x.ErrorMessage });
         return Results.BadRequest(errors);
     }
 });
 
 app.MapPut("/bikes", async (BikeValidation validator, IRentalLocationService rentalLocationService, Bike bike) =>
 {
+    if (bike.Id == null)
+        return Results.NotFound();
+
     var validationResult = validator.Validate(bike);
-    if (validationResult.IsValid && bike.Id != null)
+    if (validationResult.IsValid)
     {
         bike = await rentalLocationService.UpdateBike(bike);
 
@@ -87,7 +104,7 @@ app.MapPut("/bikes", async (BikeValidation validator, IRentalLocationService ren
     }
     else
     {
-        var errors = validationResult.Errors.Select(x => new { errors = x.ErrorMessage });
+        var errors = validationResult.Errors.Select(x => new { error = x.ErrorMessage });
         return Results.BadRequest(errors);
     }
 });
@@ -101,9 +118,9 @@ app.MapGet("/locations", async (IRentalLocationService rentalLocationService) =>
     return Results.Ok(await rentalLocationService.GetLocations());
 });
 
-app.MapGet("/locations/{id}", async (IRentalLocationService rentalLocationService, string id) =>
+app.MapGet("/locations/{locationId}", async (IRentalLocationService rentalLocationService, string locationId) =>
 {
-    var location = await rentalLocationService.GetLocation(id);
+    var location = await rentalLocationService.GetLocation(locationId);
 
     if (location == null)
         return Results.NotFound();
@@ -117,19 +134,22 @@ app.MapPost("/locations", async (LocationValidation validator, IRentalLocationSe
     if (validationResult.IsValid)
     {
         location = await rentalLocationService.AddLocation(location);
-        return Results.Created($"/biketype/{location.Id}", location);
+        return Results.Created($"/locations/{location.Id}", location);
     }
     else
     {
-        var errors = validationResult.Errors.Select(x => new { errors = x.ErrorMessage });
+        var errors = validationResult.Errors.Select(x => new { error = x.ErrorMessage });
         return Results.BadRequest(errors);
     }
 });
 
 app.MapPut("/locations", async (LocationValidation validator, IRentalLocationService rentalLocationService, RentalLocation location) =>
 {
+    if (location.Id == null)
+        return Results.NotFound();
+
     var validationResult = validator.Validate(location);
-    if (validationResult.IsValid && location.Id != null)
+    if (validationResult.IsValid)
     {
         location = await rentalLocationService.UpdateLocation(location);
 
@@ -140,7 +160,7 @@ app.MapPut("/locations", async (LocationValidation validator, IRentalLocationSer
     }
     else
     {
-        var errors = validationResult.Errors.Select(x => new { errors = x.ErrorMessage });
+        var errors = validationResult.Errors.Select(x => new { error = x.ErrorMessage });
         return Results.BadRequest(errors);
     }
 });
@@ -151,7 +171,12 @@ app.MapPut("/locations", async (LocationValidation validator, IRentalLocationSer
 
 app.MapGet("/locations/{locationId}/prices", async (IRentalLocationService rentalLocationService, string locationId) =>
 {
-    return Results.Ok(await rentalLocationService.GetBikePricesByLocation(locationId));
+    var bikePrices = await rentalLocationService.GetBikePricesByLocation(locationId);
+
+    if (bikePrices == null)
+        return Results.NotFound();
+
+    return Results.Ok(bikePrices);
 });
 
 app.MapGet("/locations/{locationId}/bikes/{bikeId}/prices", async (IRentalLocationService rentalLocationService, string locationId, string bikeId) =>
@@ -181,13 +206,16 @@ app.MapPost("/prices", async (BikePriceValidation validator, IRentalLocationServ
     }
     else
     {
-        var errors = validationResult.Errors.Select(x => new { errors = x.ErrorMessage });
+        var errors = validationResult.Errors.Select(x => new { error = x.ErrorMessage });
         return Results.BadRequest(errors);
     }
 });
 
 app.MapPut("/prices", async (BikePriceValidation validator, IRentalLocationService rentalLocationService, BikePrice bikePrice) =>
 {
+    if (bikePrice.Id == null)
+        return Results.NotFound();
+
     var validationResult = validator.Validate(bikePrice);
     if (validationResult.IsValid)
     {
@@ -196,16 +224,24 @@ app.MapPut("/prices", async (BikePriceValidation validator, IRentalLocationServi
     }
     else
     {
-        var errors = validationResult.Errors.Select(x => new { errors = x.ErrorMessage });
+        var errors = validationResult.Errors.Select(x => new { error = x.ErrorMessage });
         return Results.BadRequest(errors);
     }
 });
 
 #endregion
 
-#region Rental
+#region Rentals
 
-app.MapGet("/rentals/locations/{locationId}", async (IRentalService rentalService, string locationId) => await rentalService.GetRentalsByLocation(locationId));
+app.MapGet("/rentals/locations/{locationId}", async (IRentalService rentalService, string locationId) =>
+{
+    var rentals = await rentalService.GetRentalsByLocation(locationId);
+
+    if (rentals == null)
+        return Results.NotFound();
+
+    return Results.Ok(rentals);
+});
 
 app.MapGet("/rentals/{rentalId}", async (IRentalService rentalService, string rentalId) =>
 {
@@ -234,7 +270,7 @@ app.MapPost("/rentals/start", async (RentalValidation validator, IRentalService 
     }
     else
     {
-        var errors = validationResult.Errors.Select(x => new { errors = x.ErrorMessage });
+        var errors = validationResult.Errors.Select(x => new { error = x.ErrorMessage });
         return Results.BadRequest(errors);
     }
 });
@@ -262,7 +298,7 @@ app.MapPut("/rentals", async (RentalDetailsValidation validator, IRentalService 
     }
     else
     {
-        var errors = validationResult.Errors.Select(x => new { errors = x.ErrorMessage });
+        var errors = validationResult.Errors.Select(x => new { error = x.ErrorMessage });
         return Results.BadRequest(errors);
     }
 });

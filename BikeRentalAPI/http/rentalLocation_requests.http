@@ -29,7 +29,7 @@ Content-Type: application/json
 GET http://localhost:3000/locations
 
 ### Get Location by id
-GET http://localhost:3000/locations/623b6d8db01b44ded4987a58
+GET http://localhost:3000/locations/6240408b637894569c2dfe8c
 
 ### Add Location
 POST http://localhost:3000/locations

@@ -45,8 +45,6 @@ public class RentalLocationService : IRentalLocationService
 
     #endregion
 
-
-
     #region Locations
 
     public async Task<List<RentalLocation>> GetLocations() => await _locationRepository.GetLocations();
@@ -62,8 +60,6 @@ public class RentalLocationService : IRentalLocationService
     public async Task<RentalLocation> UpdateLocation(RentalLocation location) => await _locationRepository.UpdateLocation(location);
 
     #endregion
-
-
 
     #region Bike Prices
 
