@@ -20,6 +20,7 @@ builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyCont
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LocationValidation>());
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<BikePriceValidation>());
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RentalValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RentalDetailsValidation>());
 
 // GraphQL 
 builder.Services
@@ -245,16 +246,18 @@ app.MapPost("/rentals/{id}/stop", async (IRentalService rentalService, string id
     }
 });
 
-app.MapPut("/rentals/{id}", async (IRentalService rentalService, Rental rental) =>
+app.MapPut("/rentals", async (RentalDetailsValidation validator, IRentalService rentalService, Rental rental) =>
 {
-    try
+    var validationResult = validator.Validate(rental);
+    if (validationResult.IsValid)
     {
         rental = await rentalService.UpdateRentalDetails(rental);
         return Results.Ok(rental);
     }
-    catch (ArgumentException ex)
+    else
     {
-        return Results.BadRequest(ex);
+        var errors = validationResult.Errors.Select(x => new { errors = x.ErrorMessage });
+        return Results.BadRequest(errors);
     }
 });
 
@@ -263,5 +266,5 @@ app.MapPut("/rentals/{id}", async (IRentalService rentalService, Rental rental) 
 app.Run("http://localhost:3000");
 // app.Run();
 
-// For Xunit testing
+// For XUnit testing
 public partial class Program { }

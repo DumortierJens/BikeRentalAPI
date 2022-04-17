@@ -116,3 +116,13 @@ Content-Type: application/json
 
 ### Stop Rental
 POST http://localhost:3000/rentals/625bd132e113bceeeadcfe5e/stop
+
+### Update Bike Prices
+PUT http://localhost:3000/rentals
+Content-Type: application/json
+
+{
+    "id": "625bd132e113bceeeadcfe5e",
+    "name": "Jens Dumortier",
+    "tel": "0412345678"
+}
