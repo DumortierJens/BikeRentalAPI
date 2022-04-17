@@ -29,9 +29,9 @@ public class BikePriceRepository : IBikePriceRepository
 
     public async Task<BikePrice> UpdateBikePrice(BikePrice bikePrice)
     {
-        var filter = Builders<Bike>.Filter.Eq("id", bikePrice.Id);
-        var update = Builders<Bike>.Update.Set("prices", bikePrice.Prices);
-        var result = await _context.BikeCollection.UpdateOneAsync(filter, update);
-        return bikePrice;
+        var filter = Builders<BikePrice>.Filter.Eq("id", bikePrice.Id);
+        var update = Builders<BikePrice>.Update.Set("prices", bikePrice.Prices);
+        var opts = new FindOneAndUpdateOptions<BikePrice>() { ReturnDocument = ReturnDocument.After };
+        return await _context.BikePriceCollection.FindOneAndUpdateAsync(filter, update, opts);
     }
 }
