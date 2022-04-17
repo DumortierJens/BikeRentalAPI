@@ -6,7 +6,7 @@ public interface IMongoContext
     IMongoDatabase Database { get; }
     IMongoCollection<Bike> BikeCollection { get; }
     IMongoCollection<BikePrice> BikePriceCollection { get; }
-    IMongoCollection<Location> LocationCollection { get; }
+    IMongoCollection<RentalLocation> LocationCollection { get; }
     IMongoCollection<Rental> RentalCollection { get; }
 }
 
@@ -48,11 +48,11 @@ public class MongoContext : IMongoContext
         }
     }
 
-    public IMongoCollection<Location> LocationCollection
+    public IMongoCollection<RentalLocation> LocationCollection
     {
         get
         {
-            return _database.GetCollection<Location>(_settings.LocationCollection);
+            return _database.GetCollection<RentalLocation>(_settings.LocationCollection);
         }
     }
 

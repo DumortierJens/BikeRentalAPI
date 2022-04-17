@@ -1,25 +1,38 @@
 var builder = WebApplication.CreateBuilder(args);
 
+// Mongo Context
 var mongoSettings = builder.Configuration.GetSection("MongoConnection");
 builder.Services.Configure<DatabaseSettings>(mongoSettings);
 builder.Services.AddTransient<IMongoContext, MongoContext>();
 
+// Repositories
 builder.Services.AddTransient<IBikeRepository, BikeRepository>();
 builder.Services.AddTransient<ILocationRepository, LocationRepository>();
 builder.Services.AddTransient<IBikePriceRepository, BikePriceRepository>();
 builder.Services.AddTransient<IRentalRepository, RentalRepository>();
 
+// Services
 builder.Services.AddTransient<IRentalLocationService, RentalLocationService>();
 builder.Services.AddTransient<IRentalService, RentalService>();
 
+// Validation
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<BikeValidation>());
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LocationValidation>());
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<BikePriceValidation>());
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RentalValidation>());
 
-var app = builder.Build();
-app.MapGet("/", () => "API is working!");
+// GraphQL 
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Queries>();
+// .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
+// .AddMutationType<Mutation>();
 
+// App
+var app = builder.Build();
+app.MapGraphQL();
+
+app.MapGet("/", () => "API is working!");
 
 #region Bikes
 
@@ -91,7 +104,7 @@ app.MapGet("/locations/{id}", async (IRentalLocationService rentalLocationServic
     return Results.Ok(location);
 });
 
-app.MapPost("/locations", async (LocationValidation validator, IRentalLocationService rentalLocationService, Location location) =>
+app.MapPost("/locations", async (LocationValidation validator, IRentalLocationService rentalLocationService, RentalLocation location) =>
 {
     var validationResult = validator.Validate(location);
     if (validationResult.IsValid)
@@ -106,7 +119,7 @@ app.MapPost("/locations", async (LocationValidation validator, IRentalLocationSe
     }
 });
 
-app.MapPut("/locations", async (LocationValidation validator, IRentalLocationService rentalLocationService, Location location) =>
+app.MapPut("/locations", async (LocationValidation validator, IRentalLocationService rentalLocationService, RentalLocation location) =>
 {
     var validationResult = validator.Validate(location);
     if (validationResult.IsValid && location.Id != null)

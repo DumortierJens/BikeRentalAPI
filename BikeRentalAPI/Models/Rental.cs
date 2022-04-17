@@ -9,7 +9,7 @@ public class Rental
     public string? Tel { get; set; }
     public DateTime? StartTime { get; set; }
     public DateTime? EndTime { get; set; }
-    public Location? Location { get; set; }
+    public RentalLocation? Location { get; set; }
     public Bike? Bike { get; set; }
     public double? Price { get; set; }
 }

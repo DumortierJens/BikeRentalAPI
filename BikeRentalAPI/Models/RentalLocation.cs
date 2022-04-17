@@ -1,6 +1,6 @@
 namespace BikeRentalAPI.Models;
 
-public class Location
+public class RentalLocation
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
