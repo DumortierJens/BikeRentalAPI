@@ -19,12 +19,7 @@ public class FakeBikeRepository : IBikeRepository
     public Task<Bike> UpdateBike(Bike bike)
     {
         var oldBike = _bikes.FirstOrDefault(_ => _.Id == bike.Id);
-
-        if (oldBike != null)
-        {
-            oldBike.Name = bike.Name;
-        }
-
+        if (oldBike != null) oldBike.Name = bike.Name;
         return Task.FromResult(oldBike);
     }
 }

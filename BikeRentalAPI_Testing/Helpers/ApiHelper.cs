@@ -9,10 +9,15 @@ public class Helper
         {
             builder.ConfigureServices(services =>
             {
-                var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IBikeRepository));
-                if (descriptor != null) services.Remove(descriptor);
-                var fakeBikeTypeRepository = new ServiceDescriptor(typeof(IBikeRepository), typeof(FakeBikeRepository), ServiceLifetime.Transient);
-                services.Add(fakeBikeTypeRepository);
+                var descriptorBikeRepository = services.SingleOrDefault(d => d.ServiceType == typeof(IBikeRepository));
+                if (descriptorBikeRepository != null) services.Remove(descriptorBikeRepository);
+                var fakeBikeRepository = new ServiceDescriptor(typeof(IBikeRepository), typeof(FakeBikeRepository), ServiceLifetime.Transient);
+                services.Add(fakeBikeRepository);
+
+                var descriptorLocationRepository = services.SingleOrDefault(d => d.ServiceType == typeof(ILocationRepository));
+                if (descriptorLocationRepository != null) services.Remove(descriptorLocationRepository);
+                var fakeLocationRepository = new ServiceDescriptor(typeof(ILocationRepository), typeof(FakeLocationRepository), ServiceLifetime.Transient);
+                services.Add(fakeLocationRepository);
             });
         });
 

@@ -18,6 +18,7 @@ builder.Services.AddTransient<IRentalService, RentalService>();
 // Validation
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<BikeValidation>());
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LocationValidation>());
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateLocationValidation>());
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<BikePriceValidation>());
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RentalValidation>());
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RentalDetailsValidation>());
@@ -143,7 +144,7 @@ app.MapPost("/locations", async (LocationValidation validator, IRentalLocationSe
     }
 });
 
-app.MapPut("/locations", async (LocationValidation validator, IRentalLocationService rentalLocationService, RentalLocation location) =>
+app.MapPut("/locations", async (UpdateLocationValidation validator, IRentalLocationService rentalLocationService, RentalLocation location) =>
 {
     if (location.Id == null)
         return Results.NotFound();
