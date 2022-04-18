@@ -5,7 +5,8 @@ namespace BikeRentalAPI_Testing;
 
 public class BikeIntegrationTests
 {
-    /*[Fact]
+
+    [Fact]
     public async void Return_Bikes_OK()
     {
         var application = Helper.CreateApi();
@@ -133,6 +134,7 @@ public class BikeIntegrationTests
         var errors = await result.Content.ReadFromJsonAsync<List<object>>();
         Assert.NotNull(errors);
         Assert.Equal(1, errors.Count);
-    }*/
+    }
+
 }
 

@@ -5,6 +5,7 @@ namespace BikeRentalAPI_Testing;
 
 public class LocationIntegrationTests
 {
+
     [Fact]
     public async void Return_Locations_OK()
     {
@@ -150,5 +151,6 @@ public class LocationIntegrationTests
         Assert.NotNull(errors);
         Assert.Equal(1, errors.Count);
     }
+
 }
 

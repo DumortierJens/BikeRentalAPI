@@ -18,6 +18,11 @@ public class Helper
                 if (descriptorLocationRepository != null) services.Remove(descriptorLocationRepository);
                 var fakeLocationRepository = new ServiceDescriptor(typeof(ILocationRepository), typeof(FakeLocationRepository), ServiceLifetime.Transient);
                 services.Add(fakeLocationRepository);
+
+                var descriptorBikePriceRepository = services.SingleOrDefault(d => d.ServiceType == typeof(IBikePriceRepository));
+                if (descriptorBikePriceRepository != null) services.Remove(descriptorBikePriceRepository);
+                var fakeBikePriceRepository = new ServiceDescriptor(typeof(IBikePriceRepository), typeof(FakeBikePriceRepository), ServiceLifetime.Transient);
+                services.Add(fakeBikePriceRepository);
             });
         });
 
