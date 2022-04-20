@@ -73,7 +73,7 @@ public class RentalService : IRentalService
         var time = (DateTime)rental.EndTime - (DateTime)rental.StartTime;
         var bikePrice = await _bikePriceRepository.GetBikePrice(rental.Location.Id, rental.Bike.Id);
 
-        if (bikePrice != null)
+        if (bikePrice == null)
             throw new ArgumentException("Bike not found in location");
 
         if (time < new TimeSpan(0, 0, 0))
