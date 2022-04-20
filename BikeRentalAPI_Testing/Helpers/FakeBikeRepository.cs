@@ -12,6 +12,7 @@ public class FakeBikeRepository : IBikeRepository
 
     public Task<Bike> AddBike(Bike bike)
     {
+        bike.Id = ObjectId.GenerateNewId().ToString();
         _bikes.Add(bike);
         return Task.FromResult(bike);
     }

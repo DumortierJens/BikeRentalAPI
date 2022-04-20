@@ -57,10 +57,7 @@ public class RentalService : IRentalService
 
         var rental = await GetRental(rentalId);
         if (rental == null)
-            throw new ArgumentException("Rental not found");
-
-        if (rental.EndTime != null)
-            throw new ArgumentException("Rental is already ended");
+            return null;
 
         rental.EndTime = DateTime.Now;
         rental.Price = await CalculatePrice(rental);
@@ -75,6 +72,9 @@ public class RentalService : IRentalService
         double price;
         var time = (DateTime)rental.EndTime - (DateTime)rental.StartTime;
         var bikePrice = await _bikePriceRepository.GetBikePrice(rental.Location.Id, rental.Bike.Id);
+
+        if (bikePrice != null)
+            throw new ArgumentException("Bike not found in location");
 
         if (time < new TimeSpan(0, 0, 0))
             throw new ArgumentException("Endtime is before Starttime");

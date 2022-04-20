@@ -278,6 +278,10 @@ app.MapPost("/rentals/{rentalId}/stop", async (IRentalService rentalService, str
     try
     {
         var rental = await rentalService.StopRental(rentalId);
+
+        if (rental == null)
+            return Results.NotFound();
+
         return Results.Ok(rental);
     }
     catch (ArgumentException ex)
@@ -292,6 +296,10 @@ app.MapPut("/rentals", async (RentalDetailsValidation validator, IRentalService 
     if (validationResult.IsValid)
     {
         rental = await rentalService.UpdateRentalDetails(rental);
+
+        if (rental == null)
+            return Results.NotFound();
+
         return Results.Ok(rental);
     }
     else

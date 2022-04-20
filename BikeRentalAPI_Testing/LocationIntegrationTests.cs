@@ -1,6 +1,3 @@
-using System.Net.Http;
-using System.Text;
-
 namespace BikeRentalAPI_Testing;
 
 public class LocationIntegrationTests

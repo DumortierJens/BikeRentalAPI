@@ -12,6 +12,7 @@ public class FakeLocationRepository : ILocationRepository
 
     public Task<RentalLocation> AddLocation(RentalLocation location)
     {
+        location.Id = ObjectId.GenerateNewId().ToString();
         _locations.Add(location);
         return Task.FromResult(location);
     }

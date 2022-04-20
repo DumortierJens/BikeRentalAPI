@@ -1,11 +1,8 @@
-using System.Net.Http;
-using System.Text;
-
 namespace BikeRentalAPI_Testing;
 
 public class BikePriceIntegrationTests
 {
-    
+
     [Fact]
     public async void Return_BikePrices_Of_Location_OK()
     {
@@ -80,10 +77,10 @@ public class BikePriceIntegrationTests
         var application = Helper.CreateApi();
         var client = application.CreateClient();
 
-        var fakeBike = new Bike() { Id = "62339d87ac01f7ff39b2d06b", Name = "City Bike" };
-        FakeBikeRepository.AddFakeBike(fakeBike);
         var fakeLocation = new RentalLocation() { Id = "6240408b637894569c2dfe8c", Name = "Roeselare Bikes", City = "Roeselare" };
         FakeLocationRepository.AddFakeLocation(fakeLocation);
+        var fakeBike = new Bike() { Id = "62339d87ac01f7ff39b2d06b", Name = "City Bike" };
+        FakeBikeRepository.AddFakeBike(fakeBike);
 
         var newBikePrice = new BikePrice()
         {

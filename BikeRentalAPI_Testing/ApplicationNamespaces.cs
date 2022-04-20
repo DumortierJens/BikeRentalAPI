@@ -10,9 +10,12 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Newtonsoft.Json;
 global using System;
 global using System.Net;
+global using System.Net.Http;
+global using System.Text;
 
 // Nuget
 global using FluentAssertions;
+global using MongoDB.Bson;
 
 // Local
 global using BikeRentalAPI_Testing.Helpers;
