@@ -1,9 +1,12 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Mongo Context
+// Settings
 var mongoSettings = builder.Configuration.GetSection("MongoConnection");
 builder.Services.Configure<DatabaseSettings>(mongoSettings);
 builder.Services.AddTransient<IMongoContext, MongoContext>();
+
+var authenticationSettings = builder.Configuration.GetSection("AuthenticationSettings");
+builder.Services.Configure<AuthenticationSettings>(authenticationSettings);
 
 // Repositories
 builder.Services.AddTransient<IBikeRepository, BikeRepository>();
@@ -14,6 +17,8 @@ builder.Services.AddTransient<IRentalRepository, RentalRepository>();
 // Services
 builder.Services.AddTransient<IRentalLocationService, RentalLocationService>();
 builder.Services.AddTransient<IRentalService, RentalService>();
+builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
+builder.Services.AddTransient<ITokenService, JWTTokenService>();
 
 // Validation
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<BikeValidation>());
@@ -35,8 +40,25 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Authentication
+builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateIssuerSigningKey = true,
+        ValidAudience = builder.Configuration["AuthenticationSettings:Audience"],
+        ValidIssuer = builder.Configuration["AuthenticationSettings:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(builder.Configuration["AuthenticationSettings:SecretforKey"]))
+    };
+});
+builder.Services.AddAuthorization(options => { });
+
 // App
 var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapGraphQL();
 app.MapSwagger();
 app.UseSwaggerUI();
@@ -57,14 +79,25 @@ app.UseExceptionHandler(c => c.Run(async context =>
     }
 }));
 
+#region Authentication
+
+app.MapPost("/auth", async (IAuthenticationService authenticationService, ITokenService tokenService, AuthenticationRequestBody login) =>
+{
+    var user = authenticationService.ValidateUser(login.Username, login.Password);
+    var token = tokenService.GenerateToken(user);
+    return Results.Ok(token);
+});
+
+#endregion
+
 #region Bikes
 
-app.MapGet("/bikes", async (IRentalLocationService rentalLocationService) =>
+app.MapGet("/bikes", [Authorize] async (IRentalLocationService rentalLocationService) =>
 {
     return Results.Ok(await rentalLocationService.GetBikes());
 });
 
-app.MapGet("/bikes/{bikeId}", async (IRentalLocationService rentalLocationService, string bikeId) =>
+app.MapGet("/bikes/{bikeId}", [Authorize] async (IRentalLocationService rentalLocationService, string bikeId) =>
 {
     var bike = await rentalLocationService.GetBike(bikeId);
 
@@ -74,7 +107,7 @@ app.MapGet("/bikes/{bikeId}", async (IRentalLocationService rentalLocationServic
     return Results.Ok(bike);
 });
 
-app.MapPost("/bikes", async (BikeValidation validator, IRentalLocationService rentalLocationService, Bike bike) =>
+app.MapPost("/bikes", [Authorize] async (BikeValidation validator, IRentalLocationService rentalLocationService, Bike bike) =>
 {
     var validationResult = validator.Validate(bike);
     if (validationResult.IsValid)
@@ -89,7 +122,7 @@ app.MapPost("/bikes", async (BikeValidation validator, IRentalLocationService re
     }
 });
 
-app.MapPut("/bikes", async (BikeValidation validator, IRentalLocationService rentalLocationService, Bike bike) =>
+app.MapPut("/bikes", [Authorize] async (BikeValidation validator, IRentalLocationService rentalLocationService, Bike bike) =>
 {
     if (bike.Id == null)
         return Results.NotFound();
@@ -115,12 +148,12 @@ app.MapPut("/bikes", async (BikeValidation validator, IRentalLocationService ren
 
 #region Locations
 
-app.MapGet("/locations", async (IRentalLocationService rentalLocationService) =>
+app.MapGet("/locations", [Authorize] async (IRentalLocationService rentalLocationService) =>
 {
     return Results.Ok(await rentalLocationService.GetLocations());
 });
 
-app.MapGet("/locations/{locationId}", async (IRentalLocationService rentalLocationService, string locationId) =>
+app.MapGet("/locations/{locationId}", [Authorize] async (IRentalLocationService rentalLocationService, string locationId) =>
 {
     var location = await rentalLocationService.GetLocation(locationId);
 
@@ -130,7 +163,7 @@ app.MapGet("/locations/{locationId}", async (IRentalLocationService rentalLocati
     return Results.Ok(location);
 });
 
-app.MapPost("/locations", async (LocationValidation validator, IRentalLocationService rentalLocationService, RentalLocation location) =>
+app.MapPost("/locations", [Authorize] async (LocationValidation validator, IRentalLocationService rentalLocationService, RentalLocation location) =>
 {
     var validationResult = validator.Validate(location);
     if (validationResult.IsValid)
@@ -145,7 +178,7 @@ app.MapPost("/locations", async (LocationValidation validator, IRentalLocationSe
     }
 });
 
-app.MapPut("/locations", async (UpdateLocationValidation validator, IRentalLocationService rentalLocationService, RentalLocation location) =>
+app.MapPut("/locations", [Authorize] async (UpdateLocationValidation validator, IRentalLocationService rentalLocationService, RentalLocation location) =>
 {
     if (location.Id == null)
         return Results.NotFound();
@@ -171,9 +204,9 @@ app.MapPut("/locations", async (UpdateLocationValidation validator, IRentalLocat
 
 #region Bike Prices
 
-app.MapGet("/locations/{locationId}/prices", async (IRentalLocationService rentalLocationService, string locationId) => await rentalLocationService.GetBikePricesByLocation(locationId));
+app.MapGet("/locations/{locationId}/prices", [Authorize] async (IRentalLocationService rentalLocationService, string locationId) => await rentalLocationService.GetBikePricesByLocation(locationId));
 
-app.MapGet("/locations/{locationId}/bikes/{bikeId}/prices", async (IRentalLocationService rentalLocationService, string locationId, string bikeId) =>
+app.MapGet("/locations/{locationId}/bikes/{bikeId}/prices", [Authorize] async (IRentalLocationService rentalLocationService, string locationId, string bikeId) =>
 {
     var bikePrice = await rentalLocationService.GetBikePrice(locationId, bikeId);
 
@@ -183,7 +216,7 @@ app.MapGet("/locations/{locationId}/bikes/{bikeId}/prices", async (IRentalLocati
     return Results.Ok(bikePrice);
 });
 
-app.MapPost("/prices", async (BikePriceValidation validator, IRentalLocationService rentalLocationService, BikePrice bikePrice) =>
+app.MapPost("/prices", [Authorize] async (BikePriceValidation validator, IRentalLocationService rentalLocationService, BikePrice bikePrice) =>
 {
     var validationResult = validator.Validate(bikePrice);
     if (validationResult.IsValid)
@@ -205,7 +238,7 @@ app.MapPost("/prices", async (BikePriceValidation validator, IRentalLocationServ
     }
 });
 
-app.MapPut("/prices", async (UpdateBikePriceValidation validator, IRentalLocationService rentalLocationService, BikePrice bikePrice) =>
+app.MapPut("/prices", [Authorize] async (UpdateBikePriceValidation validator, IRentalLocationService rentalLocationService, BikePrice bikePrice) =>
 {
     if (bikePrice.Id == null)
         return Results.NotFound();
@@ -231,7 +264,7 @@ app.MapPut("/prices", async (UpdateBikePriceValidation validator, IRentalLocatio
 
 #region Rentals
 
-app.MapGet("/rentals/locations/{locationId}", async (IRentalService rentalService, string locationId) =>
+app.MapGet("/rentals/locations/{locationId}", [Authorize] async (IRentalService rentalService, string locationId) =>
 {
     var rentals = await rentalService.GetRentalsByLocation(locationId);
 
@@ -241,7 +274,7 @@ app.MapGet("/rentals/locations/{locationId}", async (IRentalService rentalServic
     return Results.Ok(rentals);
 });
 
-app.MapGet("/rentals/{rentalId}", async (IRentalService rentalService, string rentalId) =>
+app.MapGet("/rentals/{rentalId}", [Authorize] async (IRentalService rentalService, string rentalId) =>
 {
     var rental = await rentalService.GetRental(rentalId);
 
@@ -251,7 +284,7 @@ app.MapGet("/rentals/{rentalId}", async (IRentalService rentalService, string re
     return Results.Ok(rental);
 });
 
-app.MapPost("/rentals/start", async (RentalValidation validator, IRentalService rentalService, Rental rental) =>
+app.MapPost("/rentals/start", [Authorize] async (RentalValidation validator, IRentalService rentalService, Rental rental) =>
 {
     var validationResult = validator.Validate(rental);
     if (validationResult.IsValid)
@@ -273,7 +306,7 @@ app.MapPost("/rentals/start", async (RentalValidation validator, IRentalService 
     }
 });
 
-app.MapPost("/rentals/{rentalId}/stop", async (IRentalService rentalService, string rentalId) =>
+app.MapPost("/rentals/{rentalId}/stop", [Authorize] async (IRentalService rentalService, string rentalId) =>
 {
     try
     {
@@ -290,7 +323,7 @@ app.MapPost("/rentals/{rentalId}/stop", async (IRentalService rentalService, str
     }
 });
 
-app.MapPut("/rentals", async (RentalDetailsValidation validator, IRentalService rentalService, Rental rental) =>
+app.MapPut("/rentals", [Authorize] async (RentalDetailsValidation validator, IRentalService rentalService, Rental rental) =>
 {
     var validationResult = validator.Validate(rental);
     if (validationResult.IsValid)
