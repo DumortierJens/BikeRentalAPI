@@ -15,6 +15,12 @@ public class Mutation
         return new StartRentalPayload(rental);
     }
 
+    public async Task<StopRentalPayload> StopRental([Service] IRentalService rentalService, StopRentalInput input)
+    {
+        var rental = await rentalService.StopRental(input.rentalId);
+        return new StopRentalPayload(rental);
+    }
+
     public async Task<UpdateRentalDetailsPayload> UpdateRentalDetails([Service] IRentalService rentalService, UpdateRentalDetailsInput input)
     {
         var updatedRentalDetails = new Rental()
