@@ -27,9 +27,9 @@ builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyCont
 // GraphQL 
 builder.Services
     .AddGraphQLServer()
-    .AddQueryType<Queries>();
-// .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
-// .AddMutationType<Mutation>();
+    .AddQueryType<Queries>()
+    .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
+    .AddMutationType<Mutation>();
 
 // Swagger Documentation
 builder.Services.AddEndpointsApiExplorer();
@@ -311,8 +311,8 @@ app.MapPut("/rentals", async (RentalDetailsValidation validator, IRentalService 
 
 #endregion
 
-// app.Run("http://localhost:3000");
-app.Run();
+app.Run("http://localhost:3000");
+// app.Run();
 
 // For XUnit testing
 public partial class Program { }
