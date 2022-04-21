@@ -33,5 +33,7 @@ public class Helper
 
         return application;
     }
+
+    public static IRentalService CreateRentalService() => CreateApi().Services.GetService<IRentalService>();
 }
 

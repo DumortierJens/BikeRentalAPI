@@ -23,3 +23,4 @@ global using BikeRentalAPI_Testing.Helpers;
 // API
 global using BikeRentalAPI.Models;
 global using BikeRentalAPI.Repositories;
+global using BikeRentalAPI.Services;

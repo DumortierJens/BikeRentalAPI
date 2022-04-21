@@ -7,6 +7,7 @@ public interface IRentalService
     Task<List<Rental>> GetRentalsByLocation(string locationId);
     Task<Rental> StartRental(Rental rental);
     Task<Rental> UpdateRentalDetails(Rental rental);
+    Task<double> CalculatePrice(Rental rental);
 }
 
 public class RentalService : IRentalService
@@ -35,11 +36,11 @@ public class RentalService : IRentalService
         rental.EndTime = null;
         rental.Price = null;
 
-        rental.Location = await _locationRepository.GetLocation(rental.Location.Id);
+        if (rental.Location != null) rental.Location = await _locationRepository.GetLocation(rental.Location.Id);
         if (rental.Location == null)
             throw new ArgumentException("Location not found");
 
-        rental.Bike = await _bikeRepository.GetBike(rental.Bike.Id);
+        if (rental.Bike != null) rental.Bike = await _bikeRepository.GetBike(rental.Bike.Id);
         if (rental.Bike == null)
             throw new ArgumentException("Bike not found");
 
@@ -67,15 +68,21 @@ public class RentalService : IRentalService
 
     public async Task<Rental> UpdateRentalDetails(Rental rental) => await _rentalRepository.UpdateRentalDetails(rental);
 
-    private async Task<double> CalculatePrice(Rental rental)
+    public async Task<double> CalculatePrice(Rental rental)
     {
         double price;
-        var time = (DateTime)rental.EndTime - (DateTime)rental.StartTime;
-        var bikePrice = await _bikePriceRepository.GetBikePrice(rental.Location.Id, rental.Bike.Id);
 
+        if (rental.StartTime == DateTime.MinValue)
+            throw new ArgumentException("StartTime not found");
+
+        if (rental.EndTime == DateTime.MinValue)
+            throw new ArgumentException("EndTime not found");
+
+        var bikePrice = await _bikePriceRepository.GetBikePrice(rental.Location.Id, rental.Bike.Id);
         if (bikePrice == null)
             throw new ArgumentException("Bike not found in location");
 
+        var time = (DateTime)rental.EndTime - (DateTime)rental.StartTime;
         if (time < new TimeSpan(0, 0, 0))
             throw new ArgumentException("Endtime is before Starttime");
         else if (time <= new TimeSpan(12, 0, 0))
