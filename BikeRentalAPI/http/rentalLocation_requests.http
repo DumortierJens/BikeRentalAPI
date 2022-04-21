@@ -59,7 +59,7 @@ GET http://localhost:3000/locations/6240408b637894569c2dfe8c/prices
 GET http://localhost:3000/locations/6240408b637894569c2dfe8c/bikes/62404058637894569c2dfe8a/prices
 
 ### Add Bike Price
-POST http://localhost:3000/prices
+POST https://localhost:7096/prices
 Content-Type: application/json
 
 {
