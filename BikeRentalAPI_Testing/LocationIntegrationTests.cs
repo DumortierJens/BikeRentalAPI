@@ -8,6 +8,7 @@ public class LocationIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var result = await client.GetAsync("/locations");
         result.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -22,6 +23,7 @@ public class LocationIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeLocation = new RentalLocation() { Id = "62339d87ac01f7ff39b2d06b", Name = "Roeselare Bikes", City = "Roeselare" };
         FakeLocationRepository.AddFakeLocation(fakeLocation);
@@ -39,6 +41,7 @@ public class LocationIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeLocation = new RentalLocation() { Id = "62339d87ac01f7ff39b2d06b", Name = "Roeselare Bikes", City = "Roeselare" };
         FakeLocationRepository.AddFakeLocation(fakeLocation);
@@ -52,6 +55,7 @@ public class LocationIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var newLocation = new RentalLocation() { Name = "Roeselare Bikes", City = "Roeselare" };
         var content = new StringContent(JsonConvert.SerializeObject(newLocation), Encoding.UTF8, "application/json");
@@ -68,6 +72,7 @@ public class LocationIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var newLocation = new RentalLocation() { City = "Roeselare" };
         var content = new StringContent(JsonConvert.SerializeObject(newLocation), Encoding.UTF8, "application/json");
@@ -84,6 +89,7 @@ public class LocationIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var newLocation = new RentalLocation() { Name = "Roeselare Bikes" };
         var content = new StringContent(JsonConvert.SerializeObject(newLocation), Encoding.UTF8, "application/json");
@@ -100,6 +106,7 @@ public class LocationIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeLocation = new RentalLocation() { Id = "62339d87ac01f7ff39b2d06b", Name = "Roeselare Bikes", City = "Roeselare" };
         FakeLocationRepository.AddFakeLocation(fakeLocation);
@@ -120,6 +127,7 @@ public class LocationIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeLocation = new RentalLocation() { Id = "62339d87ac01f7ff39b2d06b", Name = "Roeselare Bikes", City = "Roeselare" };
         FakeLocationRepository.AddFakeLocation(fakeLocation);
@@ -135,6 +143,7 @@ public class LocationIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeLocation = new RentalLocation() { Id = "62339d87ac01f7ff39b2d06b", Name = "Roeselare Bikes", City = "Roeselare" };
         FakeLocationRepository.AddFakeLocation(fakeLocation);

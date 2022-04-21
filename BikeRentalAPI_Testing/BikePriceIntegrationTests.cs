@@ -8,6 +8,7 @@ public class BikePriceIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken()); 
 
         var result = await client.GetAsync("/locations/6240408b637894569c2dfe8c/prices");
         result.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -22,6 +23,7 @@ public class BikePriceIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken()); 
 
         var fakeBikePrice = new BikePrice()
         {
@@ -51,6 +53,7 @@ public class BikePriceIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken()); 
 
         var fakeBikePrice = new BikePrice()
         {
@@ -76,6 +79,7 @@ public class BikePriceIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken()); 
 
         var fakeLocation = new RentalLocation() { Id = "6240408b637894569c2dfe8c", Name = "Roeselare Bikes", City = "Roeselare" };
         FakeLocationRepository.AddFakeLocation(fakeLocation);
@@ -109,6 +113,7 @@ public class BikePriceIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken()); 
 
         var fakeBike = new Bike() { Id = "62339d87ac01f7ff39b2d06b", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -142,6 +147,7 @@ public class BikePriceIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken()); 
 
         var fakeBike = new Bike() { Id = "62339d87ac01f7ff39b2d06b", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -174,6 +180,7 @@ public class BikePriceIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken()); 
 
         var fakeBike = new Bike() { Id = "62339d87ac01f7ff39b2d06b", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -207,6 +214,7 @@ public class BikePriceIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken()); 
 
         var fakeBike = new Bike() { Id = "62339d87ac01f7ff39b2d06b", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -239,6 +247,7 @@ public class BikePriceIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken()); 
 
         var fakeBike = new Bike() { Id = "62339d87ac01f7ff39b2d06b", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -264,6 +273,7 @@ public class BikePriceIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken()); 
 
         var fakeBike = new Bike() { Id = "62339d87ac01f7ff39b2d06b", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -290,6 +300,7 @@ public class BikePriceIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken()); 
 
         var fakeBikePrice = new BikePrice()
         {
@@ -334,6 +345,7 @@ public class BikePriceIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken()); 
 
         var fakeBikePrice = new BikePrice()
         {
@@ -373,6 +385,7 @@ public class BikePriceIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken()); 
 
         var fakeBikePrice = new BikePrice()
         {
@@ -408,6 +421,7 @@ public class BikePriceIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken()); 
 
         var fakeBikePrice = new BikePrice()
         {

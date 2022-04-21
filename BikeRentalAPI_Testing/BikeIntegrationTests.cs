@@ -8,6 +8,7 @@ public class BikeIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var result = await client.GetAsync("/bikes");
         result.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -22,6 +23,7 @@ public class BikeIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeBike = new Bike() { Id = "62339d87ac01f7ff39b2d06b", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -39,6 +41,7 @@ public class BikeIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeBike = new Bike() { Id = "62339d87ac01f7ff39b2d06b", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -52,6 +55,7 @@ public class BikeIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var newBike = new Bike() { Name = "City bike" };
         var content = new StringContent(JsonConvert.SerializeObject(newBike), Encoding.UTF8, "application/json");
@@ -68,6 +72,7 @@ public class BikeIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var newBike = new Bike() { };
         var content = new StringContent(JsonConvert.SerializeObject(newBike), Encoding.UTF8, "application/json");
@@ -84,6 +89,7 @@ public class BikeIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeBike = new Bike() { Id = "62339d87ac01f7ff39b2d06b", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -104,6 +110,7 @@ public class BikeIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeBike = new Bike() { Id = "62339d87ac01f7ff39b2d06b", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -119,6 +126,7 @@ public class BikeIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeBike = new Bike() { Id = "62339d87ac01f7ff39b2d06b", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
