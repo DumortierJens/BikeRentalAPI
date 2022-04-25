@@ -1,0 +1,156 @@
+###### Authentication ######
+
+### Auth
+POST http://localhost:3000/auth
+Content-Type: application/json
+
+{
+    "username": "Admin",
+    "password": "Admin"
+}
+
+###### Bike Types ######
+
+### Get Bikes
+GET http://localhost:3000/bikes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+### Get Bike by id
+GET http://localhost:3000/bikes/62404058637894569c2dfe8a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+### Add Bike
+POST http://localhost:3000/bikes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+{
+    "name": "City bike"
+}
+
+### Update Bike
+PUT http://localhost:3000/bikes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+{
+    "id": "62404058637894569c2dfe8a",
+    "name": "Electric bike"
+}
+
+###### Locations ######
+
+### Get Locations
+GET http://localhost:3000/locations
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+### Get Location by id
+GET http://localhost:3000/locations/6240408b637894569c2dfe8c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+### Add Location
+POST http://localhost:3000/locations
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+{
+    "name": "Bike Rental Kortrijk",
+    "city": "Kortrijk"
+}
+
+### Update Location
+PUT http://localhost:3000/locations
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+{
+    "id": "6240408b637894569c2dfe8c",
+    "name": "Bike Rental City",
+    "city": "Kortrijk"
+}
+
+###### Bike Prices ######
+
+### Get Bike Prices by Location
+GET http://localhost:3000/locations/6240408b637894569c2dfe8c/prices
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+### Get Bike Price by Location & Bike
+GET http://localhost:3000/locations/6240408b637894569c2dfe8c/bikes/62404058637894569c2dfe8a/prices
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+### Add Bike Price
+POST http://localhost:3000/prices
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+{
+    "locationId": "6240408b637894569c2dfe8c",
+    "bikeId": "62404058637894569c2dfe8a",
+    "prices": {
+        "halfDay": 7,
+        "day": 12,
+        "twoDays": 22,
+        "treeDays": 30,
+        "extraDay": 9
+    }
+}
+
+### Update Bike Prices
+PUT http://localhost:3000/prices
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+{
+    "id": "62406ced9870f98e93c2b5d0",
+    "locationId": "6240408b637894569c2dfe8c",
+    "bikeId": "62404058637894569c2dfe8a",
+    "prices": {
+        "halfDay": 7,
+        "day": 12,
+        "twoDays": 22,
+        "treeDays": 30,
+        "extraDay": 9
+    }
+}
+
+###### Rentals ######
+
+### Get Rentals by Location
+GET http://localhost:3000/rentals/locations/6240408b637894569c2dfe8c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+### Get Rental by Id
+GET http://localhost:3000/rentals/625bd132e113bceeeadcfe5e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+### Start Rental
+POST http://localhost:3000/rentals/start
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+{
+    "name": "Jens Dumortier",
+    "tel": "0412345678",
+    "bike": {
+        "id": "62404058637894569c2dfe8a"
+    },
+    "location": {
+        "id": "6240408b637894569c2dfe8c"
+    }
+}
+
+### Stop Rental
+POST http://localhost:3000/rentals/625bd132e113bceeeadcfe5e/stop
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+### Update Bike Prices
+PUT http://localhost:3000/rentals
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAxMzMsImV4cCI6MTY1Mzg2MTU5OSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.lvdgkDFnaGJ5evfipsFAkDsVoWLb319fVe-yXz0gGs8
+
+{
+    "id": "625bd132e113bceeeadcfe5e",
+    "name": "Jens Dumortier",
+    "tel": "0412345678"
+}
