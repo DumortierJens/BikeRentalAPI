@@ -13,13 +13,16 @@ Content-Type: application/json
 
 ### Get Bikes
 GET http://localhost:3000/bikes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAzNzUsImV4cCI6MTY1MDg3Mzk3NSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.FDyA7rpKx1kxkwfGO6RQqezEfIkzLjVU3dyOElfemIE
 
 ### Get Bike by id
 GET http://localhost:3000/bikes/62404058637894569c2dfe8a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAzNzUsImV4cCI6MTY1MDg3Mzk3NSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.FDyA7rpKx1kxkwfGO6RQqezEfIkzLjVU3dyOElfemIE
 
 ### Add Bike
 POST http://localhost:3000/bikes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQWRtaW4iLCJuYmYiOjE2NTA4NzAzNzUsImV4cCI6MTY1MDg3Mzk3NSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiYXVkIjoiYmlrZV9yZW50YWxfYXBpX3VzZXJzIn0.FDyA7rpKx1kxkwfGO6RQqezEfIkzLjVU3dyOElfemIE
 
 {
     "name": "City bike"

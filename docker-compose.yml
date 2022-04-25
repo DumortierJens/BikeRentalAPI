@@ -1,0 +1,26 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
+
+version: '3.4'
+
+services:
+    bikerentalapi:
+        image: bikerentalapi
+        build:
+            context: .
+            dockerfile: BikeRentalAPI/Dockerfile
+        ports:
+            - 3000:3000
+        volumes:
+            - ./BikeRentalAPI/appsettings.Docker.json:/app/appsettings.json
+
+    mongo:
+        hostname: mongo
+        image: mongo
+        restart: always
+        ports:
+            - 27017:27017
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: example
+        volumes:
+            - ./BikeRentalAPI/data/db:/data/db
