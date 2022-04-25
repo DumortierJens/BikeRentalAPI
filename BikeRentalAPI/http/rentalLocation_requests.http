@@ -1,3 +1,14 @@
+###### Authentication ######
+
+### Auth
+POST http://localhost:3000/auth
+Content-Type: application/json
+
+{
+    "username": "Admin",
+    "password": "Admin"
+}
+
 ###### Bike Types ######
 
 ### Get Bikes

@@ -10,6 +10,10 @@ global using MongoDB.Driver;
 global using FluentValidation;
 global using FluentValidation.AspNetCore;
 global using Swashbuckle.AspNetCore;
+global using Microsoft.IdentityModel.Tokens;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
+global using Microsoft.AspNetCore.Authorization;
 
 // LOCAL
 global using BikeRentalAPI.Configuration;

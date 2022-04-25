@@ -8,6 +8,7 @@ public class RentalIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var result = await client.GetAsync("/rentals/locations/6240408b637894569c2dfe8c");
         result.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -22,6 +23,7 @@ public class RentalIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeRental = new Rental()
         {
@@ -46,6 +48,7 @@ public class RentalIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeRental = new Rental()
         {
@@ -66,6 +69,7 @@ public class RentalIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeBike = new Bike() { Id = "62404058637894569c2dfe8a", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -95,6 +99,7 @@ public class RentalIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeBike = new Bike() { Id = "62404058637894569c2dfe8a", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -124,6 +129,7 @@ public class RentalIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeBike = new Bike() { Id = "62404058637894569c2dfe8a", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -152,6 +158,7 @@ public class RentalIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeBike = new Bike() { Id = "62404058637894569c2dfe8a", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -181,6 +188,7 @@ public class RentalIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeBike = new Bike() { Id = "62404058637894569c2dfe8a", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -210,7 +218,8 @@ public class RentalIntegrationTests
     // {
     //     var application = Helper.CreateApi();
     //     var client = application.CreateClient();
-
+    // client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
+    //
     //     var fakeBike = new Bike() { Id = "62404058637894569c2dfe8a", Name = "City Bike" };
     //     FakeBikeRepository.AddFakeBike(fakeBike);
     //     var fakeLocation = new RentalLocation() { Id = "6240408b637894569c2dfe8c", Name = "Roeselare Bikes", City = "Roeselare" };
@@ -239,6 +248,7 @@ public class RentalIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeBike = new Bike() { Id = "62404058637894569c2dfe8a", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -267,6 +277,7 @@ public class RentalIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeBike = new Bike() { Id = "62404058637894569c2dfe8a", Name = "City Bike" };
         FakeBikeRepository.AddFakeBike(fakeBike);
@@ -295,6 +306,7 @@ public class RentalIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeBikePrice = new BikePrice()
         {
@@ -339,6 +351,7 @@ public class RentalIntegrationTests
     {
         var application = Helper.CreateApi();
         var client = application.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
 
         var fakeBikePrice = new BikePrice()
         {
@@ -378,7 +391,8 @@ public class RentalIntegrationTests
     // {
     //     var application = Helper.CreateApi();
     //     var client = application.CreateClient();
-
+    // client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
+    //
     //     var fakeRental = new Rental()
     //     {
     //         Id = "62406ced9870f98e93c256a9",
@@ -414,7 +428,8 @@ public class RentalIntegrationTests
     // {
     //     var application = Helper.CreateApi();
     //     var client = application.CreateClient();
-
+    // client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
+    //
     //     var fakeRental = new Rental()
     //     {
     //         Id = "62406ced9870f98e93c256a9",
@@ -444,7 +459,8 @@ public class RentalIntegrationTests
     // {
     //     var application = Helper.CreateApi();
     //     var client = application.CreateClient();
-
+    // client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
+    //
     //     var fakeRental = new Rental()
     //     {
     //         Id = "62406ced9870f98e93c256a9",
@@ -477,7 +493,8 @@ public class RentalIntegrationTests
     // {
     //     var application = Helper.CreateApi();
     //     var client = application.CreateClient();
-
+    // client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Helper.GenerateBearerToken());
+    //
     //     var fakeRental = new Rental()
     //     {
     //         Id = "62406ced9870f98e93c256a9",

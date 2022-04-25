@@ -35,5 +35,7 @@ public class Helper
     }
 
     public static IRentalService CreateRentalService() => CreateApi().Services.GetService<IRentalService>();
+
+    public static string GenerateBearerToken() => CreateApi().Services.GetService<ITokenService>().GenerateToken(new UserInfo("Test"));
 }
 
