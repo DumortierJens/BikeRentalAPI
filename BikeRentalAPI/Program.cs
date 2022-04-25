@@ -344,9 +344,9 @@ app.MapPut("/rentals", [Authorize] async (RentalDetailsValidation validator, IRe
 
 #endregion
 
-app.Run("http://0.0.0.0:3000");
-// app.Run("http://localhost:3000");
-// app.Run();
+// app.Run("http://0.0.0.0:3000"); // Docker
+app.Run("http://localhost:3000"); // Localhost
+// app.Run(); // Testing
 
 // For XUnit testing
 public partial class Program { }

@@ -17,5 +17,17 @@ public class AuthenticationIntegrationTests
         Assert.NotEmpty(token);
         Assert.IsType<string>(token);
     }
+
+    [Fact]
+    public async void Request_UNAUTHORIZED()
+    {
+        var application = Helper.CreateApi();
+        var client = application.CreateClient();
+
+        var login = new AuthenticationRequestBody("Admin", "Admin");
+        var content = new StringContent(JsonConvert.SerializeObject(login), Encoding.UTF8, "application/json");
+        var result = await client.PostAsync("/bikes", content);
+        result.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
 }
 
