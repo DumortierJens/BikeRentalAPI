@@ -2,7 +2,7 @@ namespace BikeRentalAPI.GraphQL.Mutations;
 
 public class Mutation
 {
-    public async Task<StartRentalPayload> StartRental([Service] IRentalService rentalService, StartRentalInput input)
+    public async Task<StartRentalPayload> StartRental([Service] RentalValidation validator, [Service] IRentalService rentalService, StartRentalInput input)
     {
         var newRental = new Rental()
         {
@@ -11,8 +11,17 @@ public class Mutation
             Location = new RentalLocation() { Id = input.locationId },
             Bike = new Bike() { Id = input.bikeId }
         };
-        var rental = await rentalService.StartRental(newRental);
-        return new StartRentalPayload(rental);
+
+        var validationResult = validator.Validate(newRental);
+        if (validationResult.IsValid)
+        {
+            var rental = await rentalService.StartRental(newRental);
+            return new StartRentalPayload(rental);
+        }
+
+        string message = string.Empty;
+        foreach (var error in validationResult.Errors) message += error.ErrorMessage;
+        throw new Exception(message);
     }
 
     public async Task<StopRentalPayload> StopRental([Service] IRentalService rentalService, StopRentalInput input)
@@ -21,7 +30,7 @@ public class Mutation
         return new StopRentalPayload(rental);
     }
 
-    public async Task<UpdateRentalDetailsPayload> UpdateRentalDetails([Service] IRentalService rentalService, UpdateRentalDetailsInput input)
+    public async Task<UpdateRentalDetailsPayload> UpdateRentalDetails([Service] RentalDetailsValidation validator, [Service] IRentalService rentalService, UpdateRentalDetailsInput input)
     {
         var updatedRentalDetails = new Rental()
         {
@@ -29,7 +38,16 @@ public class Mutation
             Name = input.name,
             Tel = input.tel
         };
-        var rental = await rentalService.UpdateRentalDetails(updatedRentalDetails);
-        return new UpdateRentalDetailsPayload(rental);
+
+        var validationResult = validator.Validate(updatedRentalDetails);
+        if (validationResult.IsValid)
+        {
+            var rental = await rentalService.UpdateRentalDetails(updatedRentalDetails);
+            return new UpdateRentalDetailsPayload(rental);
+        }
+
+        string message = string.Empty;
+        foreach (var error in validationResult.Errors) message += error.ErrorMessage;
+        throw new Exception(message);
     }
 }
