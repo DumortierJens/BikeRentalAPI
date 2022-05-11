@@ -13,6 +13,7 @@ You can add/update bikes, rental locations and prices for a bike at a location. 
 
 ###  How to get started
 1. **Configuration**
+	
 	Edit the config file: `/BikeRentalAPI/appsettings.Docker.json`
 
 	**Secret:** 256-bit hex string
@@ -42,6 +43,8 @@ You can add/update bikes, rental locations and prices for a bike at a location. 
 	    }
 
 2. **Startup Docker Compose**
+	
 	This will start MongoDB & the API
+	
 	Start the Docker compose file: `/docker-compose.yml`
 	
